@@ -1,7 +1,13 @@
-# 🚀 HackOrbit 2026: AI & Data Science Hackathon Portal
-**Organized by the Data Science Club**
+# 🚀 Data Science Club Software Development Team - Round 1 Submission
+**Repository Holder & Candidate Submission** | **HackOrbit 2026 Portal**
 
-> This project is designed and deployed as part of the Data Science Club Frontend Development Challenge. It features a state-of-the-art **Dual-Website Architecture** built with pure HTML5, Vanilla CSS3, and Modern JavaScript—ensuring zero dependencies, instant load speeds, and rich interactive animations.
+> This single unified GitHub repository contains complete submissions for both **Task 1: Product Thinking** and **Task 2: Frontend Development Challenge** pursuant to recruitment round instructions.
+
+---
+
+## 📑 Repository Submission Structure
+* **📌 Task 1 (Product Thinking):** [See `TASK_1_PRODUCT_THINKING.md`](./TASK_1_PRODUCT_THINKING.md) — Personal, organic product innovation and architectural feature analysis.
+* **🌐 Task 2 (Frontend Web Challenge):** [Live Interactive Vercel Deployment Link](https://hackorbit-university-hackathon-p-git-a31dfb-agnishs-projects.vercel.app/) — Enterprise-grade campus hackathon portal with cloud database connectivity.
 
 ---
 
@@ -28,25 +34,27 @@ All mandatory sections from Task 2 have been seamlessly designed and integrated 
 
 ---
 
-## 🔥 Beyond Requirement: 8 Creative Bonus Features!
-The challenge requested adding at least 3 bonus features. This submission surpasses expectations by delivering **8 advanced creative features**:
+## 🔥 Beyond Requirement: 9 Creative Bonus & Enterprise Features!
+The challenge requested adding at least 3 bonus features. This submission surpasses expectations by delivering **9 advanced creative & enterprise features**:
 
-1. **💻 Dedicated Developer / Organizer Console (`developer.html`)**
+1. **☁️ Enterprise Supabase Cloud PostgreSQL Database & Student Portal (`🌟 My Portal`)**
+   - Integrates real-time cloud data storage via `@supabase/supabase-js`. Students can log in with their university emails, browse an active campus catalog, and enroll in hackathons with an automated **Maximum 3 Concurrent Hackathons Quota**. Also includes an enterprise **90-Day Auto-Purge TTL Protocol** that automatically deletes expired user records from cloud PostgreSQL!
+2. **💻 Dedicated Developer / Organizer Console (`developer.html`)**
    - A standalone dark matrix/CLI styled portal designed specifically for developers to publish and manage announcements.
-2. **📡 Real-Time Cross-App Notification Sync**
+3. **📡 Real-Time Cross-App Notification Sync**
    - Utilizing `window.BroadcastChannel` and persistent local storage, updates broadcasted by organizers instantly appear on the top ticker banner and feed cards of the main HackOrbit portal without reloading.
-3. **⏳ Live Countdown Timer**
+4. **⏳ Live Countdown Timer**
    - Dynamically calculates days, hours, minutes, and seconds remaining until the hackathon kickoff on November 15, 2026.
-4. **📅 Interactive Schedule Timeline**
+5. **📅 Interactive Schedule Timeline**
    - Tabbed filtering allowing students to effortlessly switch between Day 1 and Day 2 events with smooth fade-in animations.
-5. **✔️ Real-Time Frontend Form Validation**
+6. **✔️ Real-Time Frontend Form Validation**
    - Custom Regex verification for student emails, optional GitHub repository URLs, and required field completion with helpful helper messages.
-6. **🎉 Celebratory Confetti Success Modal**
+7. **🎉 Celebratory Confetti Success Modal**
    - Once the application form passes validation, a congratulatory dialog modal congratulates the hacker and prepares them for competition.
-7. **🌓 Dark Mode / Cyberpunk Light Theme Switcher**
+8. **🌓 Dark Mode / Cyberpunk Light Theme Switcher**
    - A theme toggle located directly in the navigation bar that recalculates CSS custom properties between Deep AI Space Obsidian and Light Analytics mode with persistence across reloads.
-8. **❓ Expandable FAQ Accordion**
-   - Smoothly animated drop-down question cards answering critical student hacker FAQs.
+9. **❓ Expandable FAQ Accordion & Show/Hide Password Eye Toggle**
+   - Smoothly animated drop-down question cards and interactive cybersecurity password inspection controls.
 
 ---
 
