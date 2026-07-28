@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev Command Tower | HackOrbit 2026 Organizers</title>
+    <meta name="description" content="Dedicated developer and organizer portal for HackOrbit 2026. Broadcast live updates to the main hackathon website in real-time.">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dev-console-body">
+
+    <!-- HEADER -->
+    <header class="dev-header">
+        <div class="dev-title">
+            <span>💻 HackOrbit DevTower v2.6 // Organizers & Admin Console</span>
+        </div>
+        <div style="display: flex; gap: 1.5rem; align-items: center;">
+            <span style="color: #10b981; font-size: 0.9rem; font-weight: 700;">🟢 SYNC ENGINE: ACTIVE & BROADCASTING</span>
+            <a href="index.html" target="_blank" style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #10b981; padding: 0.5rem 1.2rem; border-radius: 4px; text-decoration: none; font-weight: 700; font-size: 0.9rem; transition: all 0.2s;">
+                🔗 View Live HackOrbit Website →
+            </a>
+        </div>
+    </header>
+
+    <div class="container" style="max-width: 1300px; padding: 2rem;">
+        <p style="color: #94a3b8; margin-bottom: 2rem; font-size: 1.05rem;">
+            Welcome, Data Science Club Developer! Anything you publish or delete down below is **instantly synchronized** in real-time with the main HackOrbit registration website via browser channel broadcasting. Try having both tabs open side-by-side!
+        </p>
+
+        <div class="dev-grid">
+            <!-- LEFT PANEL: TRANSMITTING NEW BROADCAST OR SCHEDULE EVENT -->
+            <div class="dev-panel">
+                <h2 class="dev-panel-title" id="formPanelTitle">📡 Transmit New Live Announcement</h2>
+                <form id="broadcastForm">
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; color: #fff; margin-bottom: 0.5rem; font-weight: 700;" id="titleLabel" for="title">Broadcast Title *</label>
+                        <input type="text" id="title" required placeholder="e.g. 🚀 NEW TRACK BONUSES RELEASED!" style="width: 100%; padding: 0.8rem; background: #0b1120; border: 1px solid #059669; color: #fff; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 1rem;">
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; color: #fff; margin-bottom: 0.5rem; font-weight: 700;" id="dateLabel" for="eventDate">Hackathon Date & Schedule Time *</label>
+                        <input type="text" id="eventDate" required placeholder="e.g. Day 1 (Nov 14) - 05:30 PM or Nov 15 | 10:00 AM" style="width: 100%; padding: 0.8rem; background: #0b1120; border: 1px solid #059669; color: #fff; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 1rem;">
+                        <p id="dateHelp" style="color: #64748b; font-size: 0.82rem; margin-top: 0.4rem; margin-bottom: 0;">This exact schedule date & time will appear on the HackOrbit Live Events portal.</p>
+                    </div>
+
+                    <div id="metaRow" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+                        <div>
+                            <label style="display: block; color: #fff; margin-bottom: 0.5rem; font-weight: 700;" for="category">Badge Category *</label>
+                            <select id="category" required style="width: 100%; padding: 0.8rem; background: #0b1120; border: 1px solid #059669; color: #fff; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 1rem; cursor: pointer;">
+                                <option value="ALERT">🚨 ALERT</option>
+                                <option value="NEW PRIZE">💰 NEW PRIZE</option>
+                                <option value="SCHEDULE">📅 SCHEDULE</option>
+                                <option value="INFO" selected>ℹ️ INFO / WORKSHOP</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="display: block; color: #fff; margin-bottom: 0.5rem; font-weight: 700;" for="priority">Card Glow & Priority *</label>
+                            <select id="priority" required style="width: 100%; padding: 0.8rem; background: #0b1120; border: 1px solid #059669; color: #fff; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 1rem; cursor: pointer;">
+                                <option value="urgent">🔴 Urgent (Red Glow)</option>
+                                <option value="prize">🟡 Prize Bounty (Gold Glow)</option>
+                                <option value="info" selected>🔵 Normal (Cyan Glow)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; color: #fff; margin-bottom: 0.5rem; font-weight: 700;" id="descLabel" for="text">Announcement Content *</label>
+                        <textarea id="text" required rows="4" placeholder="Enter full details for student hackers..." style="width: 100%; padding: 0.8rem; background: #0b1120; border: 1px solid #059669; color: #fff; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 1rem; resize: vertical;"></textarea>
+                    </div>
+
+                    <button type="submit" id="submitBtn" class="dev-btn">
+                        ⚡ BROADCAST INSTANTLY TO HACKORBIT FEED
+                    </button>
+                </form>
+            </div>
+
+            <!-- RIGHT PANEL: LIVE DASHBOARD -->
+            <div class="dev-panel">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 0.8rem; border-bottom: 1px dashed #374151;">
+                    <h2 id="dashboardTitle" style="color: #fff; font-size: 1.2rem; margin: 0;">🛰️ Active Feed & Broadcast Control</h2>
+                    <button id="backToFeedBtn" style="background: rgba(0, 242, 254, 0.15); border: 1px solid #00f2fe; color: #00f2fe; padding: 0.4rem 1rem; border-radius: 4px; cursor: pointer; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; font-weight: 700; transition: all 0.2s;">
+                        🔙 Back
+                    </button>
+                </div>
+                
+                <p id="dashboardDesc" style="color: #64748b; font-size: 0.9rem; margin-bottom: 1.5rem;">
+                    These items are currently live on the main HackOrbit portal. Deleting an item removes it from user view instantly without a page refresh.
+                </p>
+
+                <div id="devFeedList" style="display: flex; flex-direction: column; gap: 1rem; max-height: 500px; overflow-y: auto; padding-right: 0.5rem;">
+                    <!-- Javascript populates active items -->
+                </div>
+            </div>
+        </div>
+
+        <!-- BOTTOM SECTION: ECOSYSTEM LIVE CUSTOMIZATION -->
+        <div style="margin-top: 4rem; margin-bottom: 4rem; border-top: 1px solid #374151; padding-top: 2.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                    <span style="color: #00f2fe; font-weight: 700; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase;">🌍 Deep Customization Console</span>
+                    <h2 style="color: #fff; font-size: 1.8rem; margin: 0.3rem 0 0 0;">Customize "Enter the Ecosystem"</h2>
+                    <p style="color: #64748b; font-size: 0.9rem; margin: 0.4rem 0 0 0;">Modify stats, labels, challenge tracks, and descriptions below. Changes take effect on the main website when you click the save buttons.</p>
+                </div>
+                <button id="resetEcosystemBtn" style="background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #ef4444; padding: 0.5rem 1.2rem; border-radius: 4px; cursor: pointer; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; font-weight: 700; transition: all 0.2s;">
+                    🔄 Reset Ecosystem to Defaults
+                </button>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
+                <!-- 1. OVERVIEW & INTRO CUSTOMIZER -->
+                <div class="dev-panel" style="height: 100%;">
+                    <h3 style="color: #fff; font-size: 1.2rem; margin-top: 0; margin-bottom: 1rem; border-bottom: 1px dashed #374151; padding-bottom: 0.6rem;">📝 Header & Overview Text</h3>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div>
+                            <label style="display: block; color: #fff; font-size: 0.9rem; font-weight: 700; margin-bottom: 0.4rem;" for="ecoSubtitle">Section Subtitle</label>
+                            <input type="text" id="ecoSubtitle" style="width: 100%; padding: 0.7rem; background: #0b1120; border: 1px solid #059669; color: #fff; border-radius: 4px; font-family: 'JetBrains Mono', monospace;">
+                        </div>
+                        <div>
+                            <label style="display: block; color: #fff; font-size: 0.9rem; font-weight: 700; margin-bottom: 0.4rem;" for="ecoTitle">Main Heading (HTML allowed)</label>
+                            <input type="text" id="ecoTitle" style="width: 100%; padding: 0.7rem; background: #0b1120; border: 1px solid #059669; color: #fff; border-radius: 4px; font-family: 'JetBrains Mono', monospace;">
+                        </div>
+                        <div>
+                            <label style="display: block; color: #fff; font-size: 0.9rem; font-weight: 700; margin-bottom: 0.4rem;" for="ecoDesc">Overview Description</label>
+                            <textarea id="ecoDesc" rows="4" style="width: 100%; padding: 0.7rem; background: #0b1120; border: 1px solid #059669; color: #fff; border-radius: 4px; font-family: 'JetBrains Mono', monospace; resize: vertical;"></textarea>
+                        </div>
+                        <button id="saveEcoOverviewBtn" class="dev-btn" style="margin-top: 0.5rem; width: 100%;">
+                            ⚡ SAVE OVERVIEW TO MAIN WEBSITE
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 2. STATS BOXES CUSTOMIZER -->
+                <div class="dev-panel" style="height: 100%;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px dashed #374151; padding-bottom: 0.6rem;">
+                        <h3 style="color: #fff; font-size: 1.2rem; margin: 0;">📊 Stat Counters & Labels</h3>
+                        <button id="addEcoStatBtn" style="background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; color: #10b981; padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; font-weight: 700; font-size: 0.8rem;">➕ Add Stat</button>
+                    </div>
+                    <div id="ecoStatsContainer" style="display: flex; flex-direction: column; gap: 1rem; max-height: 380px; overflow-y: auto; padding-right: 0.4rem; margin-bottom: 1rem;">
+                        <!-- JS renders stat inputs here -->
+                    </div>
+                    <button id="saveEcoStatsBtn" class="dev-btn" style="background: linear-gradient(135deg, #10b981, #3b82f6); width: 100%;">
+                        💾 SAVE STATS TO MAIN WEBSITE
+                    </button>
+                </div>
+
+                <!-- 3. CHALLENGE TRACKS CUSTOMIZER -->
+                <div class="dev-panel" style="height: 100%; grid-column: 1 / -1;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px dashed #374151; padding-bottom: 0.6rem; flex-wrap: wrap; gap: 0.5rem;">
+                        <div>
+                            <h3 style="color: #fff; font-size: 1.2rem; margin: 0;">🛠️ AI & MLOps Challenge Tracks</h3>
+                            <span style="color: #64748b; font-size: 0.85rem;">Edit icon emojis, titles, and challenge goals for student teams</span>
+                        </div>
+                        <button id="addEcoTrackBtn" style="background: rgba(0, 242, 254, 0.2); border: 1px solid #00f2fe; color: #00f2fe; padding: 0.4rem 1rem; border-radius: 4px; cursor: pointer; font-weight: 700; font-size: 0.85rem;">➕ Add Challenge Track</button>
+                    </div>
+                    <div id="ecoTracksContainer" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 1.5rem;">
+                        <!-- JS renders challenge track cards here -->
+                    </div>
+                    <button id="saveEcoTracksBtn" class="dev-btn" style="background: linear-gradient(135deg, #00f2fe, #4facfe); width: 100%; max-width: 450px; margin: 0 auto; display: block;">
+                        💾 SAVE CHALLENGE TRACKS TO MAIN WEBSITE
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOTTOM SECTION #2: FREQUENTLY ASKED QUESTIONS (FAQ) LIVE CUSTOMIZATION -->
+        <div style="margin-top: 4rem; margin-bottom: 4rem; border-top: 1px solid #374151; padding-top: 2.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                    <span style="color: #f43f5e; font-family: 'JetBrains Mono', monospace; font-weight: 700; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1.5px;">GOT QUESTIONS? PORTAL EDITOR</span>
+                    <h2 style="font-size: 1.8rem; margin: 0.3rem 0; color: #fff;">Frequently Asked <span style="color: #f43f5e;">Questions</span> Customizer</h2>
+                    <p style="color: #94a3b8; font-size: 0.95rem; margin: 0;">Add new FAQ questions, modify answers, and update descriptions. Changes take effect on the main website only when you click the save buttons.</p>
+                </div>
+                <button id="resetFaqBtn" style="background: rgba(244, 63, 94, 0.15); border: 1px solid #f43f5e; color: #f43f5e; padding: 0.6rem 1.2rem; border-radius: 4px; cursor: pointer; font-family: 'JetBrains Mono', monospace; font-weight: 700; transition: all 0.2s;">
+                    🔄 Reset FAQs to Defaults
+                </button>
+            </div>
+
+            <div style="display: grid; grid-template-columns: minmax(320px, 1fr) minmax(400px, 2fr); gap: 2rem; align-items: start;" class="eco-grid-container">
+                <!-- 1. FAQ HEADER TEXT CUSTOMIZER -->
+                <div class="dev-panel" style="height: 100%;">
+                    <h3 style="color: #fff; font-size: 1.2rem; margin-bottom: 1rem; border-bottom: 1px dashed #374151; padding-bottom: 0.5rem;">📝 FAQ Section Header & Title</h3>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 1.2rem; margin-bottom: 1.5rem;">
+                        <div>
+                            <label style="display: block; color: #94a3b8; font-size: 0.85rem; margin-bottom: 0.4rem;">Section Subtitle</label>
+                            <input type="text" id="faqSubtitle" class="dev-select" style="width: 100%;" placeholder="Got Questions?">
+                        </div>
+                        <div>
+                            <label style="display: block; color: #94a3b8; font-size: 0.85rem; margin-bottom: 0.4rem;">Main Heading (HTML allowed)</label>
+                            <input type="text" id="faqTitle" class="dev-select" style="width: 100%;" placeholder="Frequently Asked <span class='text-gradient'>Questions</span>">
+                        </div>
+                        <div>
+                            <label style="display: block; color: #94a3b8; font-size: 0.85rem; margin-bottom: 0.4rem;">Overview Description</label>
+                            <textarea id="faqDesc" class="dev-select" style="width: 100%; resize: vertical;" rows="4" placeholder="Everything you need to know about competing in HackOrbit 2026."></textarea>
+                        </div>
+                    </div>
+
+                    <button id="saveFaqOverviewBtn" class="dev-btn" style="background: linear-gradient(135deg, #f43f5e, #fb7185); width: 100%;">
+                        💾 SAVE FAQ OVERVIEW TO MAIN WEBSITE
+                    </button>
+                </div>
+
+                <!-- 2. FAQ QUESTIONS & ANSWERS CUSTOMIZER -->
+                <div class="dev-panel" style="height: 100%;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; border-bottom: 1px dashed #374151; padding-bottom: 0.6rem; flex-wrap: wrap; gap: 0.5rem;">
+                        <div>
+                            <h3 style="color: #fff; font-size: 1.2rem; margin: 0;">❓ FAQ Items Editor</h3>
+                            <span style="color: #64748b; font-size: 0.85rem;">Manage accordion questions and developer responses</span>
+                        </div>
+                        <button id="addFaqItemBtn" style="background: rgba(244, 63, 94, 0.2); border: 1px solid #f43f5e; color: #f43f5e; padding: 0.4rem 1rem; border-radius: 4px; cursor: pointer; font-weight: 700; font-size: 0.85rem;">➕ Add FAQ Question</button>
+                    </div>
+
+                    <div id="faqItemsContainer" style="display: flex; flex-direction: column; gap: 1.2rem; margin-bottom: 1.5rem; max-height: 600px; overflow-y: auto; padding-right: 0.5rem;">
+                        <!-- JS renders FAQ item cards here -->
+                    </div>
+
+                    <button id="saveFaqItemsBtn" class="dev-btn" style="background: linear-gradient(135deg, #f43f5e, #e11d48); width: 100%;">
+                        💾 SAVE FAQS TO MAIN WEBSITE
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST CONFIRMATION -->
+    <div id="devToast" style="position: fixed; bottom: 30px; right: 30px; background: #10b981; color: #000; font-weight: 700; padding: 1rem 1.8rem; border-radius: 4px; box-shadow: 0 0 25px rgba(16, 185, 129, 0.6); display: none; z-index: 9999;">
+        ✅ Broadcast Transmitted across Live Channels!
+    </div>
+
+    <script src="dev-portal.js"></script>
+</body>
+</html>

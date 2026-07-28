@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HackOrbit 2026 | AI & Data Science Hackathon</title>
+    <meta name="description" content="Join HackOrbit 2026, the premiere Data Science and AI hackathon organized by the Data Science Club. Compete for $15,000+ in prizes!">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- NAVIGATION BAR -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <span class="logo-icon">🛰️</span>
+                <span>Hack<span class="text-gradient">Orbit</span></span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#schedule">Events</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="developer.html" target="_blank" style="color: var(--accent-cyan); font-weight: 700;">💻 Dev Console</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="#" id="myPortalLink" style="font-family: var(--font-heading); font-weight: 800; font-size: 0.95rem; color: #fff; background: rgba(255, 255, 255, 0.08); border: 1px solid var(--accent-cyan); padding: 0.45rem 1.2rem; border-radius: 25px; transition: all 0.3s; box-shadow: 0 0 15px rgba(0, 242, 254, 0.25); text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;">🌟 My Portal</a>
+                <button class="btn-theme" id="themeToggle" title="Toggle Theme" aria-label="Toggle Theme">🌙</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <div class="hero-tag">✨ CREATED BY DATA SCIENCE CLUB ✨</div>
+            <h1 class="hero-title">The Next Horizon of <br><span class="text-gradient">AI & Hackathons</span></h1>
+            <h2 class="hero-tagline">Code. Create. Conquer.</h2>
+            <p class="hero-subtitle">Your gateway to innovation. Register for hackathons, manage your participation, and compete with the brightest minds through one simple and secure platform.</p>
+        </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section id="about">
+        <div class="container">
+            <div class="section-header" id="ecosystemHeader">
+                <span class="section-subtitle">Why Compete?</span>
+                <h2 class="section-title">Enter the <span class="text-gradient">Ecosystem</span></h2>
+                <p style="color: var(--text-muted); max-width: 700px; margin: 0.5rem auto 0;">A platform where innovation meets opportunity, empowering participants to create cutting-edge solutions through collaboration, creativity, and technical excellence.</p>
+            </div>
+
+            <div class="stats-grid" id="ecosystemStats">
+                <div class="glass-card stat-box">
+                    <span class="stat-value text-gradient">$15K+</span>
+                    <span class="stat-label">Prize Pool & Bounties</span>
+                </div>
+                <div class="glass-card stat-box">
+                    <span class="stat-value" style="color: var(--accent-cyan);">48</span>
+                    <span class="stat-label">Hours of Coding</span>
+                </div>
+                <div class="glass-card stat-box">
+                    <span class="stat-value" style="color: var(--accent-magenta);">500+</span>
+                    <span class="stat-label">Global Hackers</span>
+                </div>
+                <div class="glass-card stat-box">
+                    <span class="stat-value" style="color: var(--accent-emerald);">4</span>
+                    <span class="stat-label">AI & MLOps Tracks</span>
+                </div>
+            </div>
+
+            <div class="tracks-grid" id="ecosystemTracks">
+                <div class="glass-card track-card">
+                    <div class="track-icon">🧠</div>
+                    <h3 class="track-title">NLP & GenAI</h3>
+                    <p class="track-desc">Build retrieval-augmented generation (RAG) models, custom LLMs, or creative multimodal tools that push language comprehension to new heights.</p>
+                </div>
+                <div class="glass-card track-card">
+                    <div class="track-icon">👁️</div>
+                    <h3 class="track-title">Computer Vision & Robotics</h3>
+                    <p class="track-desc">Develop neural networks capable of scene understanding, autonomous navigation, medical diagnosis, or ultra-fast video analytics.</p>
+                </div>
+                <div class="glass-card track-card">
+                    <div class="track-icon">📊</div>
+                    <h3 class="track-title">Big Data & MLOps</h3>
+                    <p class="track-desc">Engineer lightning-fast data processing pipelines, real-time fraud detection systems, or automated inference monitoring platforms.</p>
+                </div>
+                <div class="glass-card track-card">
+                    <div class="track-icon">🤖</div>
+                    <h3 class="track-title">Autonomous Agents</h3>
+                    <p class="track-desc">Design self-directed agentic ecosystems that execute complex reasoning loops, API orchestrations, and autonomous coding tasks.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BONUS FEATURE #2: INTERACTIVE SCHEDULE TIMELINE & LIVE ORGANIZER UPDATES -->
+    <section id="schedule" style="background: rgba(10, 15, 36, 0.25);">
+        <div class="container">
+            <div id="liveEventsHeader" class="section-header">
+                <span class="section-subtitle">Real-Time Organizer Feed & Timetables</span>
+                <h2 class="section-title">Upcoming <span class="text-gradient">Events</span></h2>
+                <p style="color: var(--text-muted); margin-top: 0.5rem;">👉 <strong>Click on any event below</strong> to unlock and view the full Hackathon Schedule!</p>
+            </div>
+
+            <!-- Sub-level: Hidden by default! Opens up when a specific live event card is clicked! -->
+            <div id="dayTabsContainer" class="schedule-tabs" style="display: none; flex-wrap: wrap; gap: 0.6rem; justify-content: center; margin-bottom: 1.5rem; border-top: 1px solid var(--border-glow); padding-top: 1.2rem;">
+                <button class="day-btn tab-btn active" data-day="day1">Day 1: Kickoff & Data Prep</button>
+                <button class="day-btn tab-btn" data-day="day2">Day 2: Training & Demos</button>
+                <button class="back-live-btn tab-btn" style="border-color: var(--accent-cyan);">🔙 Return to Live Feed</button>
+            </div>
+
+            <div class="timeline" id="timelineContent">
+                <!-- Dynamically populated by JS based on tab selected -->
+            </div>
+        </div>
+    </section>
+
+    <!-- BONUS FEATURE #4: FRONTEND REGISTRATION FORM & REAL-TIME VALIDATION -->
+    <section id="register">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Join The Hackathon</span>
+                <h2 class="section-title">Register Your <span class="text-gradient">Team</span></h2>
+                <p style="color: var(--text-muted); margin-top: 0.5rem;">Fill out the application below. Frontend live validation active!</p>
+            </div>
+
+            <div class="glass-card form-container">
+                <form id="registrationForm" novalidate>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="teamName">Team Name *</label>
+                            <input type="text" id="teamName" class="form-control" placeholder="e.g. Neural Voyagers" required>
+                            <span class="error-msg">Please enter a team name (2+ characters).</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="email">Lead Hacker Email *</label>
+                            <input type="email" id="email" class="form-control" placeholder="hacker@university.edu" required>
+                            <span class="error-msg">Please provide a valid email address.</span>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="track">Select Challenge Track *</label>
+                            <select id="track" class="form-control" required style="cursor: pointer;">
+                                <option value="">-- Choose a Track --</option>
+                                <option value="nlp">NLP & GenAI</option>
+                                <option value="vision">Computer Vision & Robotics</option>
+                                <option value="bigdata">Big Data & MLOps</option>
+                                <option value="agents">Autonomous Agents</option>
+                            </select>
+                            <span class="error-msg">Please select an AI competition track.</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="teamSize">Team Size (1-4 Hackers) *</label>
+                            <select id="teamSize" class="form-control" required style="cursor: pointer;">
+                                <option value="">-- Select Team Size --</option>
+                                <option value="1">1 Hacker (Solo)</option>
+                                <option value="2">2 Hackers</option>
+                                <option value="3">3 Hackers</option>
+                                <option value="4">4 Hackers (Max)</option>
+                            </select>
+                            <span class="error-msg">Please select how many hackers are on your team.</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="github">GitHub Profile / Organization URL (Optional)</label>
+                        <input type="url" id="github" class="form-control" placeholder="https://github.com/your-username">
+                        <span class="error-msg">Please enter a valid URL starting with http:// or https://</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="idea">Brief Project Idea / Stack (Optional)</label>
+                        <textarea id="idea" class="form-control" rows="3" placeholder="Tell us what datasets, models, or architectures you plan to experiment with..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="terms" required>
+                            <label for="terms" style="font-size: 0.9rem; color: var(--text-muted);">I agree to the HackOrbit Code of Conduct and confirm all submitted AI models will be built during the 48-hour hacking window.</label>
+                        </div>
+                        <span class="error-msg">You must accept the Code of Conduct to participate.</span>
+                    </div>
+
+                    <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; font-size: 1.1rem; margin-top: 1rem;">
+                        Submit Hackathon Application ⚡
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- BONUS FEATURE #5: EXPANDABLE FAQ ACCORDION -->
+    <section id="faq" style="background: rgba(10, 15, 36, 0.3);">
+        <div class="container">
+            <div class="section-header" id="faqSectionHeader">
+                <span class="section-subtitle">Got Questions?</span>
+                <h2 class="section-title">Frequently Asked <span class="text-gradient">Questions</span></h2>
+                <p style="color: var(--text-muted); margin-top: 0.5rem;">Everything you need to know about competing in HackOrbit 2026.</p>
+            </div>
+
+            <div class="faq-container" id="faqContainer">
+                <div class="glass-card faq-item">
+                    <div class="faq-header">
+                        <span>Who is eligible to participate in HackOrbit 2026?</span>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-content">
+                        All university undergraduate, graduate students, and bootcamp coders worldwide are welcome to participate! You can compete individually or in teams of up to 4 hackers.
+                    </div>
+                </div>
+
+                <div class="glass-card faq-item">
+                    <div class="faq-header">
+                        <span>Do I need prior experience developing neural networks or LLMs?</span>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-content">
+                        Not at all! Whether you are a beginner exploring introductory Python data science or an advanced deep learning researcher, HackOrbit provides beginner workshops, mentor support, and cloud credits for everyone.
+                    </div>
+                </div>
+
+                <div class="glass-card faq-item">
+                    <div class="faq-header">
+                        <span>How does the Live Developer Notification Feed work?</span>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-content">
+                        Our website features a real-time notification sync architecture! Organizers and developers can open the Developer Console (link in header/footer) and broadcast urgent announcements, room changes, or prize updates directly to this frontend without requiring page refreshes.
+                    </div>
+                </div>
+
+                <div class="glass-card faq-item">
+                    <div class="faq-header">
+                        <span>How much does it cost to attend?</span>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-content">
+                        HackOrbit is 100% free! We provide meals, beverages, hardware access, cloud GPUs, mentorship, and awesome swag at zero cost to participants thanks to our incredible sponsors.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CELEBRATORY SUCCESS MODAL (BONUS) -->
+    <div class="modal-overlay" id="successModal">
+        <div class="glass-card modal-content">
+            <div class="modal-icon">🎉</div>
+            <h3 class="modal-title">Registration Confirmed!</h3>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Welcome aboard, Hacker! We have received your application for HackOrbit 2026. Prepare your data pipelines and check your inbox for Discord invitations!</p>
+            <button class="btn-primary" id="closeModal" style="margin: 0 auto;">Let's Hack! 🚀</button>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-logo">
+                <span>🛰️ Hack<span class="text-gradient">Orbit 2026</span></span>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.95rem; max-width: 700px; margin: 0 auto; line-height: 1.8;">
+                Designed & Developed by Agnish Mondal.<br>
+                Crafted for the Data Science Club.<br>
+                Built using industry-standard technologies and best development practices.
+            </p>
+            <a href="developer.html" target="_blank" class="footer-dev-link">👨‍💻 Launch Developer Command Tower →</a>
+            <div style="margin-top: 2rem; color: var(--text-muted); font-size: 0.85rem;">
+                &copy; 2026 HackOrbit | All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
