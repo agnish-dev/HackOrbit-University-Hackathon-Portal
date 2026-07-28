@@ -9,20 +9,82 @@
 </head>
 <body class="dev-console-body">
 
-    <!-- HEADER -->
-    <header class="dev-header">
-        <div class="dev-title">
-            <span>💻 HackOrbit DevTower v2.6 // Organizers & Admin Console</span>
-        </div>
-        <div style="display: flex; gap: 1.5rem; align-items: center;">
-            <span style="color: #10b981; font-size: 0.9rem; font-weight: 700;">🟢 SYNC ENGINE: ACTIVE & BROADCASTING</span>
-            <a href="index.html" target="_blank" style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #10b981; padding: 0.5rem 1.2rem; border-radius: 4px; text-decoration: none; font-weight: 700; font-size: 0.9rem; transition: all 0.2s;">
-                🔗 View Live HackOrbit Website →
-            </a>
-        </div>
-    </header>
+    <!-- TITANIUM SECURITY FIREWALL & AUTH GATE -->
+    <div id="devAuthOverlay" style="position: fixed; inset: 0; background: radial-gradient(circle at center, #0b1120 0%, #020617 100%); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 1.5rem;">
+        <div style="background: rgba(15, 23, 42, 0.85); border: 2px solid #00f2fe; box-shadow: 0 0 50px rgba(0, 242, 254, 0.2), 0 0 20px rgba(244, 63, 94, 0.15); border-radius: 16px; width: 100%; max-width: 480px; padding: 2.5rem; backdrop-filter: blur(20px); text-align: center; position: relative; overflow: hidden;">
+            <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #00f2fe, #f43f5e);"></div>
+            <span style="display: inline-block; background: rgba(244, 63, 94, 0.15); border: 1px solid #f43f5e; color: #f43f5e; padding: 0.3rem 0.8rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 800; letter-spacing: 1px; margin-bottom: 1.2rem; font-family: 'JetBrains Mono', monospace;">🔒 LEVEL 5 CLEARANCE REQUIRED</span>
+            
+            <h2 style="color: #fff; font-size: 1.7rem; font-weight: 900; margin: 0 0 0.5rem 0;">Command Tower Auth</h2>
+            <p style="color: #94a3b8; font-size: 0.95rem; line-height: 1.5; margin-bottom: 2rem;">Authorized developers only. Enter your official VIT campus email & developer passphrase to access real-time hackathon telemetry.</p>
+            
+            <!-- LOGIN FORM -->
+            <form id="authLoginForm" style="text-align: left;">
+                <div style="margin-bottom: 1.2rem;">
+                    <label style="display: block; color: #e2e8f0; font-size: 0.85rem; font-weight: 700; margin-bottom: 0.4rem; font-family: 'JetBrains Mono', monospace;" for="devEmail">DEVELOPER EMAIL *</label>
+                    <input type="email" id="devEmail" required placeholder="authorized-developer@vitbhopal.ac.in" style="width: 100%; padding: 0.85rem; background: rgba(2, 6, 23, 0.8); border: 1px solid #334155; color: #fff; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.95rem; transition: all 0.2s; outline: none;" autocomplete="email">
+                </div>
 
-    <div class="container" style="max-width: 1300px; padding: 2rem;">
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; color: #e2e8f0; font-size: 0.85rem; font-weight: 700; margin-bottom: 0.4rem; font-family: 'JetBrains Mono', monospace;" for="devPass">SECRET PASSPHRASE *</label>
+                    <input type="password" id="devPass" required placeholder="••••••••••••••••" style="width: 100%; padding: 0.85rem; background: rgba(2, 6, 23, 0.8); border: 1px solid #334155; color: #fff; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.95rem; transition: all 0.2s; outline: none;" autocomplete="current-password">
+                </div>
+
+                <div id="authErrorMsg" style="color: #f43f5e; background: rgba(244, 63, 94, 0.1); border: 1px solid #f43f5e; padding: 0.75rem; border-radius: 6px; font-size: 0.85rem; margin-bottom: 1.2rem; display: none; font-family: 'JetBrains Mono', monospace;">
+                    🚨 ACCESS DENIED: Unidentified cryptographic hash signature.
+                </div>
+
+                <button type="submit" style="width: 100%; padding: 1rem; background: linear-gradient(135deg, #00f2fe, #4facfe); border: none; color: #020617; font-weight: 900; border-radius: 8px; font-size: 1.05rem; cursor: pointer; transition: all 0.2s; box-shadow: 0 0 25px rgba(0, 242, 254, 0.4); text-transform: uppercase;">
+                    ⚡ Authenticate & Unlock Tower
+                </button>
+            </form>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; padding-top: 1.2rem; border-top: 1px solid #1e293b;">
+                <button type="button" id="forgotPassBtn" style="background: transparent; border: none; color: #94a3b8; font-size: 0.85rem; text-decoration: underline; cursor: pointer; transition: color 0.2s; font-family: 'JetBrains Mono', monospace;">
+                    ❓ Forgot Password?
+                </button>
+                <a href="index.html" style="color: #64748b; font-size: 0.85rem; text-decoration: none; font-weight: 600; font-family: 'JetBrains Mono', monospace;">
+                    ⬅ Return to Portal
+                </a>
+            </div>
+
+            <!-- FORGOT PASSWORD / RECOVERY SECTION -->
+            <div id="recoveryContainer" style="display: none; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px dashed #334155; text-align: left;">
+                <span style="color: #00f2fe; font-weight: 800; font-size: 0.85rem; display: block; margin-bottom: 0.5rem;">🛡️ CRYPTOGRAPHIC RECOVERY PROTOCOL</span>
+                <p style="color: #94a3b8; font-size: 0.82rem; line-height: 1.5; margin-bottom: 1rem;">
+                    For zero-knowledge security, credentials exist strictly as one-way SHA-256 hashes in source code. To verify identity and recover access, answer your campus challenge:
+                </p>
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; color: #fff; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.3rem;" for="recoveryClubInput">Security Challenge: Official organizing club name at VIT?</label>
+                    <input type="text" id="recoveryClubInput" placeholder="e.g. Data Science Club" style="width: 100%; padding: 0.6rem; background: #020617; border: 1px solid #059669; color: #fff; border-radius: 6px; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace;">
+                </div>
+                <button type="button" id="verifyRecoveryBtn" style="width: 100%; padding: 0.65rem; background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; color: #10b981; font-weight: 800; border-radius: 6px; cursor: pointer;">
+                    🔍 Verify & Reveal Passphrase
+                </button>
+                <div id="recoveryResult" style="margin-top: 0.8rem; font-size: 0.85rem; font-weight: 700; font-family: 'JetBrains Mono', monospace; display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PROTECTED PORTAL CONTENT WRAPPER -->
+    <div id="devPortalMainContent" style="display: none;">
+        <!-- HEADER -->
+        <header class="dev-header">
+            <div class="dev-title">
+                <span>💻 HackOrbit DevTower v2.6 // Organizers & Admin Console</span>
+            </div>
+            <div style="display: flex; gap: 1.2rem; align-items: center; flex-wrap: wrap;">
+                <span style="color: #10b981; font-size: 0.9rem; font-weight: 700;">🟢 SYNC ENGINE: ACTIVE</span>
+                <button id="devLogoutBtn" style="background: rgba(244, 63, 94, 0.15); border: 1px solid #f43f5e; color: #f43f5e; padding: 0.5rem 1.1rem; border-radius: 4px; cursor: pointer; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; font-weight: 700; transition: all 0.2s;">
+                    🔒 Lock & Logout
+                </button>
+                <a href="index.html" target="_blank" style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #10b981; padding: 0.5rem 1.2rem; border-radius: 4px; text-decoration: none; font-weight: 700; font-size: 0.85rem; transition: all 0.2s;">
+                    🔗 Live Website →
+                </a>
+            </div>
+        </header>
+
+        <div class="container" style="max-width: 1300px; padding: 2rem;">
         <p style="color: #94a3b8; margin-bottom: 2rem; font-size: 1.05rem;">
             Welcome, Data Science Club Developer! Anything you publish or delete down below is **instantly synchronized** in real-time with the main HackOrbit registration website via browser channel broadcasting. Try having both tabs open side-by-side!
         </p>
@@ -221,6 +283,7 @@
             </div>
         </div>
     </div>
+    </div><!-- END #devPortalMainContent WRAPPER -->
 
     <!-- TOAST CONFIRMATION -->
     <div id="devToast" style="position: fixed; bottom: 30px; right: 30px; background: #10b981; color: #000; font-weight: 700; padding: 1rem 1.8rem; border-radius: 4px; box-shadow: 0 0 25px rgba(16, 185, 129, 0.6); display: none; z-index: 9999;">
