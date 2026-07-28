@@ -53,6 +53,19 @@ function initDevSecurityGuard() {
     const recoveryClubInput = document.getElementById('recoveryEmailInput') || document.getElementById('recoveryClubInput');
     const recoveryResult = document.getElementById('recoveryResult');
 
+    // Show / Hide Secret Passphrase Toggle Button
+    const toggleDevPass = document.getElementById('toggleDevPass');
+    const devPassInput = document.getElementById('devPass');
+    if (toggleDevPass && devPassInput) {
+        toggleDevPass.addEventListener('click', () => {
+            const isPassword = (devPassInput.type === 'password');
+            devPassInput.type = isPassword ? 'text' : 'password';
+            toggleDevPass.innerHTML = isPassword ? '🙈' : '👁️';
+            toggleDevPass.style.color = isPassword ? '#00f2fe' : '#94a3b8';
+            toggleDevPass.style.filter = isPassword ? 'drop-shadow(0 0 8px rgba(0, 242, 254, 0.6))' : 'none';
+        });
+    }
+
     if (!overlay || !mainContent) return;
 
     // Check if session clearance is active in current browser window
