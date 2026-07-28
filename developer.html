@@ -26,58 +26,58 @@
     </div>
 
     <!-- TITANIUM SECURITY FIREWALL & AUTH GATE -->
-    <div id="devAuthOverlay" style="position: fixed; inset: 0; background: radial-gradient(circle at center, #0b1120 0%, #020617 100%); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 1.5rem;">
-        <div style="background: rgba(15, 23, 42, 0.85); border: 2px solid #00f2fe; box-shadow: 0 0 50px rgba(0, 242, 254, 0.2), 0 0 20px rgba(244, 63, 94, 0.15); border-radius: 16px; width: 100%; max-width: 480px; padding: 2.5rem; backdrop-filter: blur(20px); text-align: center; position: relative; overflow: hidden;">
+    <div id="devAuthOverlay" style="position: fixed; inset: 0; background: radial-gradient(circle at center, #0b1120 0%, #020617 100%); z-index: 10000; display: flex; align-items: flex-start; justify-content: center; padding: 2rem 1rem; overflow-y: auto;">
+        <div style="background: rgba(15, 23, 42, 0.9); border: 2px solid #00f2fe; box-shadow: 0 0 50px rgba(0, 242, 254, 0.25), 0 0 20px rgba(244, 63, 94, 0.15); border-radius: 16px; width: 100%; max-width: 490px; padding: 2rem 2.2rem; backdrop-filter: blur(20px); text-align: center; position: relative; margin: auto 0; max-height: 86vh; overflow-y: auto; scrollbar-width: thin; scrollbar-color: #00f2fe rgba(2, 6, 23, 0.9);">
             <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #00f2fe, #f43f5e);"></div>
-            <span style="display: inline-block; background: rgba(244, 63, 94, 0.15); border: 1px solid #f43f5e; color: #f43f5e; padding: 0.3rem 0.8rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 800; letter-spacing: 1px; margin-bottom: 1.2rem; font-family: 'JetBrains Mono', monospace;">🔒 LEVEL 5 CLEARANCE REQUIRED</span>
+            <span style="display: inline-block; background: rgba(244, 63, 94, 0.15); border: 1px solid #f43f5e; color: #f43f5e; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.72rem; font-weight: 800; letter-spacing: 1px; margin-bottom: 1rem; font-family: 'JetBrains Mono', monospace;">🔒 LEVEL 5 CLEARANCE REQUIRED</span>
             
-            <h2 style="color: #fff; font-size: 1.7rem; font-weight: 900; margin: 0 0 0.5rem 0;">Command Tower Auth</h2>
-            <p style="color: #94a3b8; font-size: 0.95rem; line-height: 1.5; margin-bottom: 2rem;">Authorized developers only. Enter your official VIT campus email & developer passphrase to access real-time hackathon telemetry.</p>
+            <h2 style="color: #fff; font-size: 1.6rem; font-weight: 900; margin: 0 0 0.4rem 0;">Command Tower Auth</h2>
+            <p style="color: #94a3b8; font-size: 0.88rem; line-height: 1.4; margin-bottom: 1.5rem;">Authorized developers only. Enter your official VIT campus email & developer passphrase to access real-time telemetry.</p>
             
             <!-- LOGIN FORM -->
             <form id="authLoginForm" style="text-align: left;">
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; color: #e2e8f0; font-size: 0.82rem; font-weight: 700; margin-bottom: 0.3rem; font-family: 'JetBrains Mono', monospace;" for="devEmail">DEVELOPER EMAIL *</label>
+                    <input type="email" id="devEmail" required placeholder="authorized-developer@vitbhopal.ac.in" style="width: 100%; padding: 0.75rem; background: rgba(2, 6, 23, 0.9); border: 1px solid #334155; color: #fff; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; transition: all 0.2s; outline: none;" autocomplete="email">
+                </div>
+
                 <div style="margin-bottom: 1.2rem;">
-                    <label style="display: block; color: #e2e8f0; font-size: 0.85rem; font-weight: 700; margin-bottom: 0.4rem; font-family: 'JetBrains Mono', monospace;" for="devEmail">DEVELOPER EMAIL *</label>
-                    <input type="email" id="devEmail" required placeholder="authorized-developer@vitbhopal.ac.in" style="width: 100%; padding: 0.85rem; background: rgba(2, 6, 23, 0.8); border: 1px solid #334155; color: #fff; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.95rem; transition: all 0.2s; outline: none;" autocomplete="email">
+                    <label style="display: block; color: #e2e8f0; font-size: 0.82rem; font-weight: 700; margin-bottom: 0.3rem; font-family: 'JetBrains Mono', monospace;" for="devPass">SECRET PASSPHRASE *</label>
+                    <input type="password" id="devPass" required placeholder="••••••••••••••••" style="width: 100%; padding: 0.75rem; background: rgba(2, 6, 23, 0.9); border: 1px solid #334155; color: #fff; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; transition: all 0.2s; outline: none;" autocomplete="current-password">
                 </div>
 
-                <div style="margin-bottom: 1.5rem;">
-                    <label style="display: block; color: #e2e8f0; font-size: 0.85rem; font-weight: 700; margin-bottom: 0.4rem; font-family: 'JetBrains Mono', monospace;" for="devPass">SECRET PASSPHRASE *</label>
-                    <input type="password" id="devPass" required placeholder="••••••••••••••••" style="width: 100%; padding: 0.85rem; background: rgba(2, 6, 23, 0.8); border: 1px solid #334155; color: #fff; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.95rem; transition: all 0.2s; outline: none;" autocomplete="current-password">
-                </div>
-
-                <div id="authErrorMsg" style="color: #f43f5e; background: rgba(244, 63, 94, 0.1); border: 1px solid #f43f5e; padding: 0.75rem; border-radius: 6px; font-size: 0.85rem; margin-bottom: 1.2rem; display: none; font-family: 'JetBrains Mono', monospace;">
+                <div id="authErrorMsg" style="color: #f43f5e; background: rgba(244, 63, 94, 0.1); border: 1px solid #f43f5e; padding: 0.65rem; border-radius: 6px; font-size: 0.82rem; margin-bottom: 1rem; display: none; font-family: 'JetBrains Mono', monospace;">
                     🚨 ACCESS DENIED: Unidentified cryptographic hash signature.
                 </div>
 
-                <button type="submit" style="width: 100%; padding: 1rem; background: linear-gradient(135deg, #00f2fe, #4facfe); border: none; color: #020617; font-weight: 900; border-radius: 8px; font-size: 1.05rem; cursor: pointer; transition: all 0.2s; box-shadow: 0 0 25px rgba(0, 242, 254, 0.4); text-transform: uppercase;">
+                <button type="submit" style="width: 100%; padding: 0.85rem; background: linear-gradient(135deg, #00f2fe, #4facfe); border: none; color: #020617; font-weight: 900; border-radius: 8px; font-size: 1rem; cursor: pointer; transition: all 0.2s; box-shadow: 0 0 25px rgba(0, 242, 254, 0.4); text-transform: uppercase;">
                     ⚡ Authenticate & Unlock Tower
                 </button>
             </form>
 
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; padding-top: 1.2rem; border-top: 1px solid #1e293b;">
-                <button type="button" id="forgotPassBtn" style="background: transparent; border: none; color: #94a3b8; font-size: 0.85rem; text-decoration: underline; cursor: pointer; transition: color 0.2s; font-family: 'JetBrains Mono', monospace;">
-                    ❓ Forgot Password?
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.2rem; padding-top: 1rem; border-top: 1px solid #1e293b;">
+                <button type="button" id="forgotPassBtn" style="background: transparent; border: none; color: #00f2fe; font-size: 0.85rem; font-weight: 700; text-decoration: underline; cursor: pointer; transition: color 0.2s; font-family: 'JetBrains Mono', monospace;">
+                    ❓ Forgot Password? (Scroll Down 👇)
                 </button>
-                <a href="index.html" style="color: #64748b; font-size: 0.85rem; text-decoration: none; font-weight: 600; font-family: 'JetBrains Mono', monospace;">
+                <a href="index.html" style="color: #64748b; font-size: 0.82rem; text-decoration: none; font-weight: 600; font-family: 'JetBrains Mono', monospace;">
                     ⬅ Return to Portal
                 </a>
             </div>
 
             <!-- FORGOT PASSWORD / RECOVERY SECTION -->
-            <div id="recoveryContainer" style="display: none; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px dashed #334155; text-align: left;">
-                <span style="color: #00f2fe; font-weight: 800; font-size: 0.85rem; display: block; margin-bottom: 0.5rem;">📬 MASTER MAILER RECOVERY PROTOCOL</span>
-                <p style="color: #94a3b8; font-size: 0.82rem; line-height: 1.5; margin-bottom: 1rem;">
-                    Enter your registered developer campus email below. If verified in our SHA-256 registry, the <strong>Master Admin Mailer</strong> (`master.admin@vitbhopal.ac.in`) will generate and dispatch your secure recovery passphrase directly to your screen inbox.
+            <div id="recoveryContainer" style="display: none; margin-top: 1.2rem; padding-top: 1.2rem; border-top: 1px dashed #334155; text-align: left;">
+                <span style="color: #00f2fe; font-weight: 800; font-size: 0.85rem; display: block; margin-bottom: 0.4rem;">📬 MASTER MAILER RECOVERY PROTOCOL</span>
+                <p style="color: #94a3b8; font-size: 0.8rem; line-height: 1.4; margin-bottom: 0.8rem;">
+                    Enter your registered developer campus email below. If verified in our SHA-256 registry, the <strong>Master Admin Mailer</strong> (`master.admin@vitbhopal.ac.in`) will dispatch your secure credentials right here.
                 </p>
-                <div style="margin-bottom: 1rem;">
-                    <label style="display: block; color: #fff; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.3rem;" for="recoveryEmailInput">Registered Developer Email:</label>
-                    <input type="email" id="recoveryEmailInput" placeholder="agnish.24bai10423@vitbhopal.ac.in" style="width: 100%; padding: 0.7rem; background: #020617; border: 1px solid #00f2fe; color: #fff; border-radius: 6px; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace;" autocomplete="email">
+                <div style="margin-bottom: 0.8rem;">
+                    <label style="display: block; color: #fff; font-size: 0.78rem; font-weight: 700; margin-bottom: 0.3rem;" for="recoveryEmailInput">Registered Developer Email:</label>
+                    <input type="email" id="recoveryEmailInput" placeholder="agnish.24bai10423@vitbhopal.ac.in" style="width: 100%; padding: 0.65rem; background: #020617; border: 1px solid #00f2fe; color: #fff; border-radius: 6px; font-size: 0.82rem; font-family: 'JetBrains Mono', monospace;" autocomplete="email">
                 </div>
-                <button type="button" id="verifyRecoveryBtn" style="width: 100%; padding: 0.75rem; background: linear-gradient(135deg, rgba(0, 242, 254, 0.2), rgba(138, 43, 226, 0.3)); border: 1px solid #00f2fe; color: #00f2fe; font-weight: 800; border-radius: 6px; cursor: pointer; transition: all 0.2s; text-transform: uppercase;">
-                    📧 Request Passphrase Reset from Master Mailer
+                <button type="button" id="verifyRecoveryBtn" style="width: 100%; padding: 0.7rem; background: linear-gradient(135deg, rgba(0, 242, 254, 0.2), rgba(138, 43, 226, 0.3)); border: 1px solid #00f2fe; color: #00f2fe; font-weight: 800; border-radius: 6px; cursor: pointer; transition: all 0.2s; text-transform: uppercase; font-size: 0.82rem;">
+                    📧 Request Reset from Master Mailer
                 </button>
-                <div id="recoveryResult" style="margin-top: 1rem; font-size: 0.82rem; font-weight: 700; font-family: 'JetBrains Mono', monospace; display: none; line-height: 1.6;"></div>
+                <div id="recoveryResult" style="margin-top: 0.8rem; font-size: 0.8rem; font-weight: 700; font-family: 'JetBrains Mono', monospace; display: none; line-height: 1.5;"></div>
             </div>
         </div>
     </div>

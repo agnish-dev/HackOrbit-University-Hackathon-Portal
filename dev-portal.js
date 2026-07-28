@@ -130,7 +130,13 @@ function initDevSecurityGuard() {
     // Forgot Password Trigger
     if (forgotBtn && recoveryContainer) {
         forgotBtn.addEventListener('click', () => {
-            recoveryContainer.style.display = recoveryContainer.style.display === 'none' ? 'block' : 'none';
+            const isClosing = recoveryContainer.style.display !== 'none';
+            recoveryContainer.style.display = isClosing ? 'none' : 'block';
+            if (!isClosing) {
+                setTimeout(() => {
+                    recoveryContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                }, 50);
+            }
         });
     }
 
@@ -217,6 +223,10 @@ function initDevSecurityGuard() {
                                 if (submitBtn) submitBtn.click();
                             });
                         }
+
+                        setTimeout(() => {
+                            recoveryResult.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                        }, 50);
                     }, 1200);
                 } else {
                     recoveryResult.style.display = 'block';
