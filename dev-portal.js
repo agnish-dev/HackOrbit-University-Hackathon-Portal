@@ -4,9 +4,39 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+    enforcePCWorkstationGuard();
     initDevSecurityGuard();
     initDevPortal();
 });
+
+/* =========================================================
+   00. PC & DESKTOP WORKSTATION ENFORCEMENT GUARD
+========================================================= */
+function enforcePCWorkstationGuard() {
+    const mobileBlocker = document.getElementById('mobileBlockerOverlay');
+    if (!mobileBlocker) return;
+
+    function checkDevice() {
+        const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+        const isMobileUA = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+        const isSmallScreen = window.innerWidth < 1024;
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 1;
+
+        // Immediately block if mobile user-agent is detected or screen size/touch parameters indicate a tablet/mobile device
+        if (isMobileUA || (isTouchDevice && isSmallScreen) || (window.innerWidth < 800)) {
+            mobileBlocker.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            return true;
+        } else {
+            mobileBlocker.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            return false;
+        }
+    }
+
+    checkDevice();
+    window.addEventListener('resize', checkDevice);
+}
 
 /* =========================================================
    0. TITANIUM SECURITY CLEARANCE & AUTH GATEWAY (SHA-256)

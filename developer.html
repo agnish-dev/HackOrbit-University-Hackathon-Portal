@@ -9,6 +9,22 @@
 </head>
 <body class="dev-console-body">
 
+    <!-- MOBILE / TABLET WORKSTATION RESTRICTION SHIELD -->
+    <div id="mobileBlockerOverlay" style="position: fixed; inset: 0; background: #020617; z-index: 20000; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; text-align: center;">
+        <div style="background: rgba(15, 23, 42, 0.95); border: 2px solid #f43f5e; box-shadow: 0 0 50px rgba(244, 63, 94, 0.4); border-radius: 16px; width: 100%; max-width: 480px; padding: 2.5rem; position: relative; backdrop-filter: blur(15px);">
+            <div style="font-size: 3.5rem; margin-bottom: 1rem;">🖥️ ⚡ 📱🚫</div>
+            <span style="display: inline-block; background: rgba(244, 63, 94, 0.2); border: 1px solid #f43f5e; color: #f43f5e; padding: 0.35rem 0.9rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 800; letter-spacing: 1.5px; margin-bottom: 1.2rem; font-family: 'JetBrains Mono', monospace;">🚨 WORKSTATION RESTRICTION PROTOCOL</span>
+            <h2 style="color: #fff; font-size: 1.6rem; font-weight: 900; margin-bottom: 1rem;">PC & Desktop Access Only</h2>
+            <p style="color: #94a3b8; font-size: 0.95rem; line-height: 1.6; margin-bottom: 2.2rem;">
+                The Developer Command Tower requires enterprise multi-channel broadcast syncing and high-resolution screen space. Access via mobile devices or tablets is restricted.<br><br>
+                <strong style="color: #00f2fe; border-bottom: 1px dashed #00f2fe;">Please launch this console from an authorized PC or Desktop workstation.</strong>
+            </p>
+            <a href="index.html" style="display: inline-block; width: 100%; padding: 1rem; background: linear-gradient(135deg, #00f2fe, #4facfe); color: #020617; text-decoration: none; font-weight: 900; border-radius: 8px; font-size: 1rem; box-shadow: 0 0 25px rgba(0, 242, 254, 0.4); font-family: 'JetBrains Mono', monospace; transition: all 0.2s; text-transform: uppercase;">
+                ⬅ Return to Main Website
+            </a>
+        </div>
+    </div>
+
     <!-- TITANIUM SECURITY FIREWALL & AUTH GATE -->
     <div id="devAuthOverlay" style="position: fixed; inset: 0; background: radial-gradient(circle at center, #0b1120 0%, #020617 100%); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 1.5rem;">
         <div style="background: rgba(15, 23, 42, 0.85); border: 2px solid #00f2fe; box-shadow: 0 0 50px rgba(0, 242, 254, 0.2), 0 0 20px rgba(244, 63, 94, 0.15); border-radius: 16px; width: 100%; max-width: 480px; padding: 2.5rem; backdrop-filter: blur(20px); text-align: center; position: relative; overflow: hidden;">
