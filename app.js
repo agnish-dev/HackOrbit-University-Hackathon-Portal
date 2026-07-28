@@ -1006,13 +1006,15 @@ function initStudentPortal() {
         portalLink.addEventListener('click', (e) => {
             e.preventDefault();
             modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('active'), 10);
             renderPortalUI();
         });
     }
 
     if (closeBtn && modal) {
         closeBtn.addEventListener('click', () => {
-            modal.style.display = 'none';
+            modal.classList.remove('active');
+            setTimeout(() => { modal.style.display = 'none'; }, 300);
         });
     }
 
@@ -1020,7 +1022,8 @@ function initStudentPortal() {
     if (modal) {
         modal.addEventListener('click', (e) => {
             if (e.target === modal) {
-                modal.style.display = 'none';
+                modal.classList.remove('active');
+                setTimeout(() => { modal.style.display = 'none'; }, 300);
             }
         });
     }
@@ -1170,8 +1173,10 @@ function initStudentPortal() {
     // Attach global helper for bulletproof inline fallback triggering
     window.renderPortalUI = renderPortalUI;
     window.openMyPortalModal = () => {
-        if (modal) {
-            modal.style.display = 'flex';
+        const m = document.getElementById('myPortalModal');
+        if (m) {
+            m.style.display = 'flex';
+            setTimeout(() => m.classList.add('active'), 10);
             renderPortalUI();
         }
     };
