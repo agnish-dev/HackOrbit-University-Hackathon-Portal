@@ -243,6 +243,64 @@
         </div>
     </section>
 
+    <!-- STUDENT MY PORTAL DATABASE MODAL -->
+    <div class="modal-overlay" id="myPortalModal" style="display: none; align-items: center; justify-content: center; z-index: 99999; padding: 1rem;">
+        <div class="glass-card modal-content" style="max-width: 650px; width: 100%; text-align: left; max-height: 90vh; overflow-y: auto; position: relative; padding: 2.2rem;">
+            <button type="button" id="closeMyPortalBtn" style="position: absolute; top: 1.2rem; right: 1.5rem; background: transparent; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; transition: color 0.2s;">&times;</button>
+
+            <div id="portalLoginSection" style="text-align: center;">
+                <span style="display: inline-block; background: rgba(0, 242, 254, 0.15); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); padding: 0.3rem 0.85rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 800; letter-spacing: 1px; margin-bottom: 1rem;">🎓 CAMPUS HACKATHON DATABASE</span>
+                <h3 style="color: #fff; font-size: 1.8rem; font-weight: 900; margin-bottom: 0.5rem;">Student Hub & Enrollment</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; margin-bottom: 1.5rem;">Log in or create a student profile. Each hacker is allowed a <strong>maximum of 3 concurrent hackathons</strong>. All student data is automatically purged after 90 days pursuant to university privacy protocols.</p>
+
+                <form id="portalLoginForm" style="text-align: left; max-width: 420px; margin: 0 auto;">
+                    <div class="form-group" style="margin-bottom: 1.2rem;">
+                        <label class="form-label" style="display: block; font-weight: 700; color: #fff; margin-bottom: 0.4rem;" for="portalStudentName">Student Full Name *</label>
+                        <input type="text" id="portalStudentName" class="form-control" placeholder="e.g. Alex Rivera" required style="width: 100%; padding: 0.75rem; background: rgba(2, 6, 23, 0.8); border: 1px solid var(--border-glow); color: #fff; border-radius: 8px;">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 1.5rem;">
+                        <label class="form-label" style="display: block; font-weight: 700; color: #fff; margin-bottom: 0.4rem;" for="portalStudentEmail">VIT University Email *</label>
+                        <input type="email" id="portalStudentEmail" class="form-control" placeholder="alex.rivera2024@vitbhopal.ac.in" required style="width: 100%; padding: 0.75rem; background: rgba(2, 6, 23, 0.8); border: 1px solid var(--border-glow); color: #fff; border-radius: 8px;">
+                    </div>
+                    <button type="submit" class="btn-primary" style="width: 100%; padding: 0.9rem; text-transform: uppercase; font-weight: 900; letter-spacing: 1px;">🚀 Enter My Portal & Catalog</button>
+                </form>
+            </div>
+
+            <div id="portalDashboardSection" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1rem; margin-bottom: 1.2rem;">
+                    <div>
+                        <h3 id="dashStudentName" style="color: #fff; font-size: 1.5rem; font-weight: 900; margin: 0 0 0.2rem 0;">Student Hub</h3>
+                        <span id="dashStudentEmail" style="color: var(--accent-cyan); font-size: 0.85rem; font-family: 'JetBrains Mono', monospace;">email@vitbhopal.ac.in</span>
+                    </div>
+                    <button type="button" id="portalLogoutBtn" style="padding: 0.5rem 0.9rem; background: rgba(244, 63, 94, 0.15); border: 1px solid #f43f5e; color: #f43f5e; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 0.82rem; transition: all 0.2s;">🔒 Log Out</button>
+                </div>
+
+                <div style="background: rgba(0, 242, 254, 0.06); border-left: 4px solid var(--accent-cyan); padding: 0.85rem 1rem; border-radius: 0 8px 8px 0; margin-bottom: 1.5rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                        <span style="color: #fff; font-weight: 800; font-size: 0.9rem;">Hackathon Enrollment Quota</span>
+                        <span id="enrollmentCountText" style="color: var(--accent-cyan); font-weight: 900; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;">0 / 3 MAX</span>
+                    </div>
+                    <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 9999px; overflow: hidden;">
+                        <div id="enrollmentProgressBar" style="width: 0%; height: 100%; background: linear-gradient(90deg, #00f2fe, #4facfe); transition: width 0.3s ease;"></div>
+                    </div>
+                    <span style="display: block; color: var(--text-muted); font-size: 0.75rem; margin-top: 0.5rem;">⏱️ <strong>90-Day Auto-Purge Protocol:</strong> Your enrollment records auto-expire 90 days from registration date.</span>
+                </div>
+
+                <div id="portalAlertBox" style="display: none; padding: 0.85rem; border-radius: 8px; font-weight: 700; font-size: 0.88rem; margin-bottom: 1.2rem; font-family: 'JetBrains Mono', monospace;"></div>
+
+                <h4 style="color: #fff; font-size: 1.1rem; font-weight: 800; margin-bottom: 0.8rem; border-bottom: 1px dashed rgba(255,255,255,0.15); padding-bottom: 0.4rem;">🎯 My Enrolled Hackathons</h4>
+                <div id="enrolledHackathonsList" style="margin-bottom: 1.8rem;">
+                    <!-- Dynamically populated -->
+                </div>
+
+                <h4 style="color: #fff; font-size: 1.1rem; font-weight: 800; margin-bottom: 0.8rem; border-bottom: 1px dashed rgba(255,255,255,0.15); padding-bottom: 0.4rem;">🏁 Available 2026 Campus Hackathons</h4>
+                <div id="availableHackathonsCatalog">
+                    <!-- Dynamically populated -->
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- CELEBRATORY SUCCESS MODAL (BONUS) -->
     <div class="modal-overlay" id="successModal">
         <div class="glass-card modal-content">

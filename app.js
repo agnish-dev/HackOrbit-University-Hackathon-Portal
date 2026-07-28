@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initFaqAccordion();
     initFormValidation();
     initLiveBroadcastSync();
+    initStudentPortal();
 
     // Ensure registration links unlock and show the registration form when clicked
     document.querySelectorAll('a[href="#register"]').forEach(link => {
@@ -714,6 +715,14 @@ function initFormValidation() {
         }
 
         if (isFormValid) {
+            // Auto-enroll student into Main HackOrbit event via StudentDB
+            const regEmail = document.getElementById('email') ? document.getElementById('email').value.trim().toLowerCase() : 'hacker@vitbhopal.ac.in';
+            const regTeam = document.getElementById('teamName') ? document.getElementById('teamName').value.trim() : 'Hacker Team';
+            if (typeof StudentDB !== 'undefined') {
+                StudentDB.loginOrCreate(regEmail, regTeam);
+                StudentDB.enroll(regEmail, 'ho2026', 'HackOrbit 2026: AI & Data Science Grand Prix', 'October 15-17, 2026', '🛰️ MAIN EVENT');
+            }
+
             // Trigger Celebratory Success Modal
             modal.classList.add('active');
             form.reset();
@@ -760,3 +769,295 @@ function initThemeToggle() {
         }
     });
 }
+
+/* =========================================================
+   7. HACKORBIT STUDENT DATABASE & MY PORTAL ENGINE
+   Features: 90-Day Auto-Purge Protocol & Max 3 Hackathons Cap
+========================================================= */
+const AVAILABLE_HACKATHONS = [
+    { id: 'ho2026', title: 'HackOrbit 2026: AI & Data Science Grand Prix', date: 'Oct 15-17, 2026', badge: '🛰️ MAIN EVENT', track: 'Artificial Intelligence & Large Language Models' },
+    { id: 'c4t2026', title: 'Code 4 Tomorrow: Autonomous Drone Sprint', date: 'Nov 5-7, 2026', badge: '🤖 ROBOTICS', track: 'Hardware Interfacing & Embedded ML' },
+    { id: 'qb2026', title: 'Quantum Bits: FinTech & Blockchain Security', date: 'Dec 2-4, 2026', badge: '🔐 CYBERSECURITY', track: 'Zero-Knowledge Proofs & DeFi Protection' },
+    { id: 'ns2026', title: 'NeuroSphere 2026: Brain-Computer Interfaces', date: 'Jan 20-22, 2027', badge: '🧠 BIOTECH', track: 'Neural Signal Processing & Healthcare AI' },
+    { id: 'gt2026', title: 'GreenTech Summit: Clean Energy Grid Hackathon', date: 'Feb 11-13, 2027', badge: '🌱 SUSTAINABILITY', track: 'Smart Grid Optimization & ESG Telemetry' }
+];
+
+const StudentDB = {
+    DB_KEY: 'hackorbit_student_db_v1',
+    ACTIVE_KEY: 'hackorbit_active_student_email',
+
+    getDB() {
+        try {
+            const data = localStorage.getItem(this.DB_KEY);
+            return data ? JSON.parse(data) : { students: {} };
+        } catch (e) {
+            return { students: {} };
+        }
+    },
+
+    saveDB(db) {
+        try {
+            localStorage.setItem(this.DB_KEY, JSON.stringify(db));
+        } catch (e) {}
+    },
+
+    // Automated 90-Day TTL Deletion Protocol
+    purgeOldRecords() {
+        const db = this.getDB();
+        const ninetyDaysMs = 90 * 24 * 60 * 60 * 1000;
+        const now = Date.now();
+        let changed = false;
+
+        Object.keys(db.students).forEach(email => {
+            const student = db.students[email];
+            if (student && student.createdAt && (now - student.createdAt > ninetyDaysMs)) {
+                delete db.students[email];
+                changed = true;
+                if (sessionStorage.getItem(this.ACTIVE_KEY) === email) {
+                    sessionStorage.removeItem(this.ACTIVE_KEY);
+                }
+            }
+        });
+
+        if (changed) {
+            this.saveDB(db);
+        }
+    },
+
+    loginOrCreate(email, name) {
+        email = email.toLowerCase().trim();
+        const db = this.getDB();
+        if (!db.students[email]) {
+            db.students[email] = {
+                email: email,
+                name: name || email.split('@')[0],
+                createdAt: Date.now(),
+                enrollments: []
+            };
+            this.saveDB(db);
+        } else if (name && db.students[email].name !== name && name !== 'Hacker Team') {
+            db.students[email].name = name;
+            this.saveDB(db);
+        }
+        sessionStorage.setItem(this.ACTIVE_KEY, email);
+        return db.students[email];
+    },
+
+    getCurrentStudent() {
+        const email = sessionStorage.getItem(this.ACTIVE_KEY);
+        if (!email) return null;
+        const db = this.getDB();
+        return db.students[email] || null;
+    },
+
+    logout() {
+        sessionStorage.removeItem(this.ACTIVE_KEY);
+    },
+
+    enroll(email, hackathonId, title, date, badge) {
+        const db = this.getDB();
+        const student = db.students[email];
+        if (!student) return { success: false, message: 'Student profile not found.' };
+
+        // Check Maximum 3 Hackathons Cap
+        if (student.enrollments && student.enrollments.length >= 3) {
+            return {
+                success: false,
+                message: '🚨 ENROLLMENT CAP EXCEEDED: Students are allowed a maximum of 3 concurrent hackathons. Please unenroll from an active event to open a registration slot!'
+            };
+        }
+
+        const exists = student.enrollments.some(item => item.id === hackathonId);
+        if (exists) {
+            return { success: false, message: `⚠️ You are already enrolled in ${title}.` };
+        }
+
+        student.enrollments.push({ id: hackathonId, title, date, badge, enrolledAt: Date.now() });
+        this.saveDB(db);
+        return { success: true, message: `🎉 Successfully enrolled in ${title}!` };
+    },
+
+    unenroll(email, hackathonId) {
+        const db = this.getDB();
+        const student = db.students[email];
+        if (!student) return;
+        student.enrollments = student.enrollments.filter(item => item.id !== hackathonId);
+        this.saveDB(db);
+    }
+};
+
+function initStudentPortal() {
+    // Run automated 90-day student database deletion purge on initialization
+    StudentDB.purgeOldRecords();
+
+    const portalLink = document.getElementById('myPortalLink');
+    const modal = document.getElementById('myPortalModal');
+    const closeBtn = document.getElementById('closeMyPortalBtn');
+    const loginForm = document.getElementById('portalLoginForm');
+    const logoutBtn = document.getElementById('portalLogoutBtn');
+    const alertBox = document.getElementById('portalAlertBox');
+
+    if (portalLink && modal) {
+        portalLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            modal.style.display = 'flex';
+            renderPortalUI();
+        });
+    }
+
+    if (closeBtn && modal) {
+        closeBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+    }
+
+    // Close on overlay background click
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    }
+
+    if (loginForm) {
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const nameInput = document.getElementById('portalStudentName');
+            const emailInput = document.getElementById('portalStudentEmail');
+            if (nameInput && emailInput) {
+                StudentDB.loginOrCreate(emailInput.value, nameInput.value);
+                loginForm.reset();
+                renderPortalUI();
+            }
+        });
+    }
+
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            StudentDB.logout();
+            renderPortalUI();
+        });
+    }
+
+    function showPortalAlert(msg, isSuccess) {
+        if (!alertBox) return;
+        alertBox.style.display = 'block';
+        alertBox.style.background = isSuccess ? 'rgba(0, 242, 254, 0.12)' : 'rgba(244, 63, 94, 0.15)';
+        alertBox.style.border = isSuccess ? '1px solid #00f2fe' : '1px solid #f43f5e';
+        alertBox.style.color = isSuccess ? '#00f2fe' : '#f43f5e';
+        alertBox.innerHTML = msg;
+        setTimeout(() => {
+            alertBox.style.display = 'none';
+        }, 5000);
+    }
+
+    function renderPortalUI() {
+        const loginSection = document.getElementById('portalLoginSection');
+        const dashSection = document.getElementById('portalDashboardSection');
+        const currentStudent = StudentDB.getCurrentStudent();
+
+        if (!currentStudent) {
+            if (loginSection) loginSection.style.display = 'block';
+            if (dashSection) dashSection.style.display = 'none';
+            return;
+        }
+
+        if (loginSection) loginSection.style.display = 'none';
+        if (dashSection) dashSection.style.display = 'block';
+
+        // Populate header info
+        const nameEl = document.getElementById('dashStudentName');
+        const emailEl = document.getElementById('dashStudentEmail');
+        if (nameEl) nameEl.innerText = currentStudent.name || 'Hacker Profile';
+        if (emailEl) emailEl.innerText = currentStudent.email;
+
+        // Update 3-Hackathon Quota Meter
+        const enrollCount = currentStudent.enrollments.length;
+        const countText = document.getElementById('enrollmentCountText');
+        const progressBar = document.getElementById('enrollmentProgressBar');
+        if (countText) {
+            countText.innerText = `${enrollCount} / 3 MAX`;
+            countText.style.color = enrollCount >= 3 ? '#f43f5e' : '#00f2fe';
+        }
+        if (progressBar) {
+            progressBar.style.width = `${Math.min(100, (enrollCount / 3) * 100)}%`;
+            progressBar.style.background = enrollCount >= 3 ? 'linear-gradient(90deg, #f43f5e, #ff007f)' : 'linear-gradient(90deg, #00f2fe, #4facfe)';
+        }
+
+        // Render Enrolled List
+        const enrolledContainer = document.getElementById('enrolledHackathonsList');
+        if (enrolledContainer) {
+            if (enrollCount === 0) {
+                enrolledContainer.innerHTML = `<p style="color: var(--text-muted); font-size: 0.88rem; font-style: italic; background: rgba(255,255,255,0.02); padding: 1rem; border-radius: 8px; border: 1px dashed rgba(255,255,255,0.1); text-align: center;">No active enrollments yet. Choose from the available campus hackathons below!</p>`;
+            } else {
+                enrolledContainer.innerHTML = currentStudent.enrollments.map(item => `
+                    <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(2, 6, 23, 0.7); border: 1px solid rgba(0, 242, 254, 0.3); padding: 0.85rem 1rem; border-radius: 8px; margin-bottom: 0.6rem;">
+                        <div>
+                            <span style="font-size: 0.72rem; background: rgba(0, 242, 254, 0.15); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); padding: 0.2rem 0.6rem; border-radius: 9999px; font-weight: 800; display: inline-block; margin-bottom: 0.3rem;">${item.badge}</span>
+                            <div style="color: #fff; font-weight: 800; font-size: 0.95rem;">${item.title}</div>
+                            <div style="color: var(--text-muted); font-size: 0.8rem; font-family: 'JetBrains Mono', monospace;">📅 ${item.date}</div>
+                        </div>
+                        <button type="button" class="btn-unenroll" data-id="${item.id}" style="background: rgba(244, 63, 94, 0.15); border: 1px solid #f43f5e; color: #f43f5e; padding: 0.45rem 0.75rem; border-radius: 6px; font-size: 0.75rem; font-weight: 800; cursor: pointer; transition: all 0.2s; white-space: nowrap;">❌ Unenroll</button>
+                    </div>
+                `).join('');
+            }
+
+            // Bind unenroll buttons
+            enrolledContainer.querySelectorAll('.btn-unenroll').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = btn.getAttribute('data-id');
+                    StudentDB.unenroll(currentStudent.email, id);
+                    showPortalAlert('ℹ️ Unenrolled from event. You have opened up a registration slot!', true);
+                    renderPortalUI();
+                });
+            });
+        }
+
+        // Render Available Catalog
+        const catalogContainer = document.getElementById('availableHackathonsCatalog');
+        if (catalogContainer) {
+            catalogContainer.innerHTML = AVAILABLE_HACKATHONS.map(ev => {
+                const isEnrolled = currentStudent.enrollments.some(e => e.id === ev.id);
+                const isFull = !isEnrolled && (enrollCount >= 3);
+                let btnHtml = '';
+
+                if (isEnrolled) {
+                    btnHtml = `<button type="button" disabled style="background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; color: #10b981; padding: 0.5rem 0.85rem; border-radius: 6px; font-weight: 800; font-size: 0.78rem; cursor: default; white-space: nowrap;">✅ Enrolled</button>`;
+                } else if (isFull) {
+                    btnHtml = `<button type="button" class="btn-try-enroll-full" data-id="${ev.id}" style="background: rgba(244, 63, 94, 0.15); border: 1px solid #f43f5e; color: #f43f5e; padding: 0.5rem 0.85rem; border-radius: 6px; font-weight: 800; font-size: 0.78rem; cursor: pointer; white-space: nowrap;" title="Limit Reached">🔒 Cap Full (3/3)</button>`;
+                } else {
+                    btnHtml = `<button type="button" class="btn-enroll-now" data-id="${ev.id}" style="background: linear-gradient(135deg, #00f2fe, #4facfe); border: none; color: #020617; padding: 0.5rem 0.95rem; border-radius: 6px; font-weight: 900; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; white-space: nowrap; box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);">⚡ Enroll Now</button>`;
+                }
+
+                return `
+                    <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255,255,255,0.08); padding: 0.95rem 1rem; border-radius: 8px; margin-bottom: 0.6rem; transition: border-color 0.2s;">
+                        <div style="padding-right: 1rem;">
+                            <span style="font-size: 0.7rem; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #e2e8f0; padding: 0.15rem 0.5rem; border-radius: 4px; font-weight: 700; display: inline-block; margin-bottom: 0.3rem;">${ev.badge}</span>
+                            <div style="color: #fff; font-weight: 800; font-size: 0.95rem;">${ev.title}</div>
+                            <div style="color: var(--accent-cyan); font-size: 0.78rem; margin-top: 0.15rem;">📌 ${ev.track}</div>
+                            <div style="color: var(--text-muted); font-size: 0.78rem; font-family: 'JetBrains Mono', monospace; margin-top: 0.15rem;">🗓️ ${ev.date}</div>
+                        </div>
+                        <div>
+                            ${btnHtml}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Bind enroll buttons
+            catalogContainer.querySelectorAll('.btn-enroll-now, .btn-try-enroll-full').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = btn.getAttribute('data-id');
+                    const ev = AVAILABLE_HACKATHONS.find(x => x.id === id);
+                    if (ev) {
+                        const res = StudentDB.enroll(currentStudent.email, ev.id, ev.title, ev.date, ev.badge);
+                        showPortalAlert(res.message, res.success);
+                        renderPortalUI();
+                    }
+                });
+            });
+        }
+    }
+}
+
