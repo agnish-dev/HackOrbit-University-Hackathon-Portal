@@ -71,7 +71,7 @@ function initDevSecurityGuard() {
             errorMsg.style.display = 'none';
 
             const emailInput = document.getElementById('devEmail').value.toLowerCase().trim();
-            const passInput = document.getElementById('devPass').value;
+            const passInput = document.getElementById('devPass').value.trim();
 
             try {
                 // Generate SHA-256 Hash using browser native Web Crypto Engine
@@ -84,9 +84,9 @@ function initDevSecurityGuard() {
                 const emailHex = Array.from(new Uint8Array(emailHashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
                 const passHex = Array.from(new Uint8Array(passHashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
 
-                // Target hashes: agnish.24bai10423@vitbhopal.ac.in & HackOrbit#2026
+                // Target hashes: agnish.24bai10423@vitbhopal.ac.in & incredibleGamer
                 const TARGET_EMAIL_HASH = "cdfc1cd438c20577d90bda67a83e14d2fc3b6d800a601ae6efc10df4550d482d";
-                const TARGET_PASS_HASH = "5e3f2ffd5124ac64375dc753f7979eee54313d1b023cd671ccaef990a8c5a366";
+                const TARGET_PASS_HASH = "d7ec9df01341781771a5d2d21f888ccae67772caae1a209f32f9f418d422db90";
 
                 if (emailHex === TARGET_EMAIL_HASH && passHex === TARGET_PASS_HASH) {
                     sessionStorage.setItem('hackorbit_dev_auth', 'AUTHORIZED');
@@ -133,7 +133,7 @@ function initDevSecurityGuard() {
             const validNames = ['data science club', 'dsc', 'data science club vit', 'data science club vit bhopal', 'vit bhopal'];
             if (validNames.includes(val)) {
                 // Dynamically decrypt passphrase using character code mapping to prevent plaintext string inspection
-                const revealedPass = [72, 97, 99, 107, 79, 114, 98, 105, 116, 35, 50, 48, 50, 54].map(c => String.fromCharCode(c)).join('');
+                const revealedPass = [105, 110, 99, 114, 101, 100, 105, 98, 108, 101, 71, 97, 109, 101, 114].map(c => String.fromCharCode(c)).join('');
                 recoveryResult.style.display = 'block';
                 recoveryResult.style.color = '#10b981';
                 recoveryResult.style.background = 'rgba(16, 185, 129, 0.1)';
