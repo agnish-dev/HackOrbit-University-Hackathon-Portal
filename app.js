@@ -771,9 +771,21 @@ function initThemeToggle() {
 }
 
 /* =========================================================
-   7. HACKORBIT STUDENT DATABASE & MY PORTAL ENGINE
-   Features: 90-Day Auto-Purge Protocol & Max 3 Hackathons Cap
+   7. HACKORBIT STUDENT DATABASE & MY PORTAL ENGINE (SUPABASE CLOUD + LOCAL TTL)
+   Features: Real-Time Supabase Cloud Sync, 90-Day Auto-Purge Protocol & Max 3 Hackathons Cap
 ========================================================= */
+const SUPABASE_URL = 'https://eklmplkcfnxchbkialmx.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVrbG1wbGtjZm54Y2hia2lhbG14Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUyNTQ0MzksImV4cCI6MjEwMDgzMDQzOX0.q5MJLdrzCEdaEO547wvI6ZhzFNRURF27fe5tJ7QJhjo';
+let sbClient = null;
+try {
+    if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
+        sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        console.log('⚡ [Supabase] Connected to Enterprise PostgreSQL Database (South Asia - Mumbai)');
+    }
+} catch (e) {
+    console.warn('⚠️ Supabase client failed to initialize:', e);
+}
+
 const AVAILABLE_HACKATHONS = [
     { id: 'ho2026', title: 'HackOrbit 2026: AI & Data Science Grand Prix', date: 'Oct 15-17, 2026', badge: '🛰️ MAIN EVENT', track: 'Artificial Intelligence & Large Language Models' },
     { id: 'c4t2026', title: 'Code 4 Tomorrow: Autonomous Drone Sprint', date: 'Nov 5-7, 2026', badge: '🤖 ROBOTICS', track: 'Hardware Interfacing & Embedded ML' },
@@ -801,7 +813,84 @@ const StudentDB = {
         } catch (e) {}
     },
 
-    // Automated 90-Day TTL Deletion Protocol
+    async syncStudentFromCloud(email, callback) {
+        if (!sbClient) return;
+        try {
+            email = email.toLowerCase().trim();
+            const { data: studentData } = await sbClient.from('students').select('*').eq('email', email).single();
+            const { data: enrollmentData } = await sbClient.from('enrollments').select('*').eq('student_email', email);
+
+            const db = this.getDB();
+            if (studentData) {
+                db.students[email] = db.students[email] || {};
+                db.students[email].email = studentData.email;
+                db.students[email].name = studentData.name || db.students[email].name || email.split('@')[0];
+                db.students[email].createdAt = studentData.created_at ? new Date(studentData.created_at).getTime() : Date.now();
+                db.students[email].enrollments = [];
+                
+                if (enrollmentData && Array.isArray(enrollmentData)) {
+                    enrollmentData.forEach(item => {
+                        db.students[email].enrollments.push({
+                            id: item.hackathon_id,
+                            title: item.hackathon_title,
+                            date: item.date_string,
+                            badge: item.badge,
+                            enrolledAt: item.enrolled_at ? new Date(item.enrolled_at).getTime() : Date.now()
+                        });
+                    });
+                }
+                this.saveDB(db);
+                if (callback && typeof callback === 'function') callback();
+            }
+        } catch(err) {
+            console.warn('Supabase sync warning:', err);
+        }
+    },
+
+    async pushStudentToCloud(email) {
+        if (!sbClient) return;
+        const db = this.getDB();
+        const student = db.students[email];
+        if (!student) return;
+        try {
+            await sbClient.from('students').upsert({
+                email: student.email,
+                name: student.name,
+                created_at: new Date(student.createdAt).toISOString()
+            }, { onConflict: 'email' });
+        } catch(e) {}
+    },
+
+    async pushEnrollmentToCloud(email, item) {
+        if (!sbClient) return;
+        try {
+            await sbClient.from('enrollments').insert({
+                student_email: email,
+                hackathon_id: item.id,
+                hackathon_title: item.title,
+                date_string: item.date,
+                badge: item.badge,
+                enrolled_at: new Date(item.enrolledAt || Date.now()).toISOString()
+            });
+        } catch(e) {}
+    },
+
+    async deleteEnrollmentFromCloud(email, hackathonId) {
+        if (!sbClient) return;
+        try {
+            await sbClient.from('enrollments').delete().eq('student_email', email).eq('hackathon_id', hackathonId);
+        } catch(e) {}
+    },
+
+    async purgeCloudExpiredRecords() {
+        if (!sbClient) return;
+        try {
+            const ninetyDaysAgo = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString();
+            await sbClient.from('students').delete().lt('created_at', ninetyDaysAgo);
+        } catch(e) {}
+    },
+
+    // Automated 90-Day TTL Deletion Protocol (Both Local & Cloud PostgreSQL)
     purgeOldRecords() {
         const db = this.getDB();
         const ninetyDaysMs = 90 * 24 * 60 * 60 * 1000;
@@ -822,9 +911,12 @@ const StudentDB = {
         if (changed) {
             this.saveDB(db);
         }
+
+        // Simultaneously clean up expired PostgreSQL records in Supabase
+        this.purgeCloudExpiredRecords();
     },
 
-    loginOrCreate(email, name) {
+    loginOrCreate(email, name, onSyncCallback) {
         email = email.toLowerCase().trim();
         const db = this.getDB();
         if (!db.students[email]) {
@@ -840,6 +932,11 @@ const StudentDB = {
             this.saveDB(db);
         }
         sessionStorage.setItem(this.ACTIVE_KEY, email);
+
+        // Synchronize with Supabase cloud asynchronously
+        this.pushStudentToCloud(email);
+        this.syncStudentFromCloud(email, onSyncCallback);
+
         return db.students[email];
     },
 
@@ -872,8 +969,13 @@ const StudentDB = {
             return { success: false, message: `⚠️ You are already enrolled in ${title}.` };
         }
 
-        student.enrollments.push({ id: hackathonId, title, date, badge, enrolledAt: Date.now() });
+        const newItem = { id: hackathonId, title, date, badge, enrolledAt: Date.now() };
+        student.enrollments.push(newItem);
         this.saveDB(db);
+
+        // Sync insertion to Supabase cloud PostgreSQL table
+        this.pushEnrollmentToCloud(email, newItem);
+
         return { success: true, message: `🎉 Successfully enrolled in ${title}!` };
     },
 
@@ -883,6 +985,9 @@ const StudentDB = {
         if (!student) return;
         student.enrollments = student.enrollments.filter(item => item.id !== hackathonId);
         this.saveDB(db);
+
+        // Sync deletion to Supabase cloud PostgreSQL table
+        this.deleteEnrollmentFromCloud(email, hackathonId);
     }
 };
 
@@ -926,7 +1031,9 @@ function initStudentPortal() {
             const nameInput = document.getElementById('portalStudentName');
             const emailInput = document.getElementById('portalStudentEmail');
             if (nameInput && emailInput) {
-                StudentDB.loginOrCreate(emailInput.value, nameInput.value);
+                StudentDB.loginOrCreate(emailInput.value, nameInput.value, () => {
+                    renderPortalUI();
+                });
                 loginForm.reset();
                 renderPortalUI();
             }
