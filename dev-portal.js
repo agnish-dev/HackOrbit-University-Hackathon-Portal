@@ -85,11 +85,11 @@ function initDevSecurityGuard() {
                 const emailHex = Array.from(new Uint8Array(emailHashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
                 const passHex = Array.from(new Uint8Array(passHashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
 
-                // Standard Dev Hashes: agnish.24bai10423@vitbhopal.ac.in & incredibleGamer
+                // Authorized Developer Cryptographic SHA-256 Hashes
                 const TARGET_EMAIL_HASH = "cdfc1cd438c20577d90bda67a83e14d2fc3b6d800a601ae6efc10df4550d482d";
                 const TARGET_PASS_HASH = "d7ec9df01341781771a5d2d21f888ccae67772caae1a209f32f9f418d422db90";
 
-                // Master Admin Hashes: master.admin@vitbhopal.ac.in & MasterOrbit#2026 (or incredibleGamer)
+                // Authorized Master Admin Cryptographic SHA-256 Hashes
                 const MASTER_EMAIL_HASH = "13349a8f6caf478598c2a9742c64fb9a7d9915cc5b4747fcf05bf9d2c7002aa6";
                 const MASTER_PASS_HASH = "5c5a4d72fc6090ddf77f96ebed6024dfe9aeddfd1e612e574cebd83dab6bdd81";
 
@@ -166,16 +166,15 @@ function initDevSecurityGuard() {
                 const valHashBuffer = await crypto.subtle.digest('SHA-256', valBuffer);
                 const valHex = Array.from(new Uint8Array(valHashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
 
-                // Standard Dev Email Hash: agnish.24bai10423@vitbhopal.ac.in
+                // Authorized Developer SHA-256 Hash Registry
                 const TARGET_EMAIL_HASH = "cdfc1cd438c20577d90bda67a83e14d2fc3b6d800a601ae6efc10df4550d482d";
-                // Master Admin Email Hash: master.admin@vitbhopal.ac.in
                 const MASTER_EMAIL_HASH = "13349a8f6caf478598c2a9742c64fb9a7d9915cc5b4747fcf05bf9d2c7002aa6";
 
                 const isTargetDev = (valHex === TARGET_EMAIL_HASH);
                 const isMasterAdmin = (valHex === MASTER_EMAIL_HASH || val === 'master' || val === 'master.admin@vitbhopal.ac.in');
 
                 if (isTargetDev || isMasterAdmin) {
-                    const targetRecipient = isMasterAdmin ? (val === 'master' ? 'master.admin@vitbhopal.ac.in' : val) : 'agnish.24bai10423@vitbhopal.ac.in';
+                    const targetRecipient = isMasterAdmin ? (val === 'master' ? 'master.admin@vitbhopal.ac.in' : val) : val;
                     
                     recoveryResult.style.display = 'block';
                     recoveryResult.style.color = '#00f2fe';
