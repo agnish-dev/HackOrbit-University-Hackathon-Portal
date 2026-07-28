@@ -66,18 +66,18 @@
 
             <!-- FORGOT PASSWORD / RECOVERY SECTION -->
             <div id="recoveryContainer" style="display: none; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px dashed #334155; text-align: left;">
-                <span style="color: #ffb800; font-weight: 800; font-size: 0.85rem; display: block; margin-bottom: 0.5rem;">🛡️ MASTER ADMIN & CAMPUS RECOVERY PROTOCOL</span>
+                <span style="color: #00f2fe; font-weight: 800; font-size: 0.85rem; display: block; margin-bottom: 0.5rem;">📬 MASTER MAILER RECOVERY PROTOCOL</span>
                 <p style="color: #94a3b8; font-size: 0.82rem; line-height: 1.5; margin-bottom: 1rem;">
-                    For zero-knowledge security, credentials exist strictly as SHA-256 hashes. Enter either your <strong>Master Email</strong> or answer your <strong>Campus Challenge (Club Name)</strong> to instantly reveal passphrase access:
+                    Enter your registered developer campus email below. If verified in our SHA-256 registry, the <strong>Master Admin Mailer</strong> (`master.admin@vitbhopal.ac.in`) will generate and dispatch your secure recovery passphrase directly to your screen inbox.
                 </p>
                 <div style="margin-bottom: 1rem;">
-                    <label style="display: block; color: #fff; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.3rem;" for="recoveryClubInput">Master Email or Organizing Club Name:</label>
-                    <input type="text" id="recoveryClubInput" placeholder="master.admin@... OR Data Science Club" style="width: 100%; padding: 0.7rem; background: #020617; border: 1px solid #ffb800; color: #fff; border-radius: 6px; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace;">
+                    <label style="display: block; color: #fff; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.3rem;" for="recoveryEmailInput">Registered Developer Email:</label>
+                    <input type="email" id="recoveryEmailInput" placeholder="agnish.24bai10423@vitbhopal.ac.in" style="width: 100%; padding: 0.7rem; background: #020617; border: 1px solid #00f2fe; color: #fff; border-radius: 6px; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace;" autocomplete="email">
                 </div>
-                <button type="button" id="verifyRecoveryBtn" style="width: 100%; padding: 0.7rem; background: rgba(255, 184, 0, 0.2); border: 1px solid #ffb800; color: #ffb800; font-weight: 800; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
-                    👑 Verify & Unlock Recovery Passphrases
+                <button type="button" id="verifyRecoveryBtn" style="width: 100%; padding: 0.75rem; background: linear-gradient(135deg, rgba(0, 242, 254, 0.2), rgba(138, 43, 226, 0.3)); border: 1px solid #00f2fe; color: #00f2fe; font-weight: 800; border-radius: 6px; cursor: pointer; transition: all 0.2s; text-transform: uppercase;">
+                    📧 Request Passphrase Reset from Master Mailer
                 </button>
-                <div id="recoveryResult" style="margin-top: 0.8rem; font-size: 0.82rem; font-weight: 700; font-family: 'JetBrains Mono', monospace; display: none; line-height: 1.6;"></div>
+                <div id="recoveryResult" style="margin-top: 1rem; font-size: 0.82rem; font-weight: 700; font-family: 'JetBrains Mono', monospace; display: none; line-height: 1.6;"></div>
             </div>
         </div>
     </div>
