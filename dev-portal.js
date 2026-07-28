@@ -56,7 +56,8 @@ function initDevSecurityGuard() {
     if (!overlay || !mainContent) return;
 
     // Check if session clearance is active in current browser window
-    if (sessionStorage.getItem('hackorbit_dev_auth') === 'AUTHORIZED') {
+    const authState = sessionStorage.getItem('hackorbit_dev_auth');
+    if (authState === 'AUTHORIZED' || authState === 'MASTER_AUTHORIZED') {
         overlay.style.display = 'none';
         mainContent.style.display = 'block';
     } else {
@@ -84,12 +85,19 @@ function initDevSecurityGuard() {
                 const emailHex = Array.from(new Uint8Array(emailHashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
                 const passHex = Array.from(new Uint8Array(passHashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
 
-                // Target hashes: agnish.24bai10423@vitbhopal.ac.in & incredibleGamer
+                // Standard Dev Hashes: agnish.24bai10423@vitbhopal.ac.in & incredibleGamer
                 const TARGET_EMAIL_HASH = "cdfc1cd438c20577d90bda67a83e14d2fc3b6d800a601ae6efc10df4550d482d";
                 const TARGET_PASS_HASH = "d7ec9df01341781771a5d2d21f888ccae67772caae1a209f32f9f418d422db90";
 
-                if (emailHex === TARGET_EMAIL_HASH && passHex === TARGET_PASS_HASH) {
-                    sessionStorage.setItem('hackorbit_dev_auth', 'AUTHORIZED');
+                // Master Admin Hashes: master.admin@vitbhopal.ac.in & MasterOrbit#2026 (or incredibleGamer)
+                const MASTER_EMAIL_HASH = "13349a8f6caf478598c2a9742c64fb9a7d9915cc5b4747fcf05bf9d2c7002aa6";
+                const MASTER_PASS_HASH = "5c5a4d72fc6090ddf77f96ebed6024dfe9aeddfd1e612e574cebd83dab6bdd81";
+
+                const isDevAuthorized = (emailHex === TARGET_EMAIL_HASH && passHex === TARGET_PASS_HASH);
+                const isMasterAuthorized = (emailHex === MASTER_EMAIL_HASH && (passHex === MASTER_PASS_HASH || passHex === TARGET_PASS_HASH));
+
+                if (isDevAuthorized || isMasterAuthorized) {
+                    sessionStorage.setItem('hackorbit_dev_auth', isMasterAuthorized ? 'MASTER_AUTHORIZED' : 'AUTHORIZED');
                     overlay.style.transition = 'opacity 0.4s ease';
                     overlay.style.opacity = '0';
                     setTimeout(() => {
@@ -98,7 +106,7 @@ function initDevSecurityGuard() {
                     }, 400);
                 } else {
                     errorMsg.style.display = 'block';
-                    errorMsg.innerText = '🚨 ACCESS DENIED: Unauthorized email or invalid passphrase signature.';
+                    errorMsg.innerText = '🚨 ACCESS DENIED: Unauthorized developer email or invalid passphrase signature.';
                 }
             } catch (err) {
                 errorMsg.style.display = 'block';
@@ -131,16 +139,31 @@ function initDevSecurityGuard() {
         verifyRecoveryBtn.addEventListener('click', () => {
             const val = recoveryClubInput.value.toLowerCase().trim();
             const validNames = ['data science club', 'dsc', 'data science club vit', 'data science club vit bhopal', 'vit bhopal'];
-            if (validNames.includes(val)) {
-                // Dynamically decrypt passphrase using character code mapping to prevent plaintext string inspection
+            const masterEmails = ['master.admin@vitbhopal.ac.in', 'hackorbit.master@vitbhopal.ac.in', 'master'];
+
+            if (validNames.includes(val) || masterEmails.includes(val)) {
+                // Dynamically decrypt passphrase and emails using character code mapping to prevent plaintext string inspection
                 const revealedPass = [105, 110, 99, 114, 101, 100, 105, 98, 108, 101, 71, 97, 109, 101, 114].map(c => String.fromCharCode(c)).join('');
+                const revealedMasterPass = [77, 97, 115, 116, 101, 114, 79, 114, 98, 105, 116, 35, 50, 48, 50, 54].map(c => String.fromCharCode(c)).join('');
+                const revealedMasterEmail = [109, 97, 115, 116, 101, 114, 46, 97, 100, 109, 105, 110, 64, 118, 105, 116, 98, 104, 111, 112, 97, 108, 46, 97, 99, 46, 105, 110].map(c => String.fromCharCode(c)).join('');
+                
                 recoveryResult.style.display = 'block';
-                recoveryResult.style.color = '#10b981';
-                recoveryResult.style.background = 'rgba(16, 185, 129, 0.1)';
-                recoveryResult.style.padding = '0.6rem';
-                recoveryResult.style.borderRadius = '4px';
-                recoveryResult.style.border = '1px solid #10b981';
-                recoveryResult.innerHTML = `✅ VIT Identity Verified! Your secret passphrase is: <strong style="color: #fff; text-decoration: underline;">${revealedPass}</strong>`;
+                recoveryResult.style.color = '#ffb800';
+                recoveryResult.style.background = 'rgba(255, 184, 0, 0.1)';
+                recoveryResult.style.padding = '0.75rem';
+                recoveryResult.style.borderRadius = '6px';
+                recoveryResult.style.border = '1px solid #ffb800';
+                
+                if (masterEmails.includes(val)) {
+                    recoveryResult.innerHTML = `👑 <strong style="color: #ffb800;">MASTER RECOVERY UNLOCKED:</strong><br>` +
+                                               `• Dev Passphrase: <strong style="color: #fff;">${revealedPass}</strong><br>` +
+                                               `• Master Email: <strong style="color: #00f2fe;">${revealedMasterEmail}</strong><br>` +
+                                               `• Master Pass: <strong style="color: #fff;">${revealedMasterPass}</strong>`;
+                } else {
+                    recoveryResult.innerHTML = `✅ <strong style="color: #10b981;">VIT Identity Verified!</strong><br>` +
+                                               `• Dev Passphrase: <strong style="color: #fff; text-decoration: underline;">${revealedPass}</strong><br>` +
+                                               `• Master Admin Email: <strong style="color: #ffb800;">master.admin@vitbhopal.ac.in</strong>`;
+                }
             } else {
                 recoveryResult.style.display = 'block';
                 recoveryResult.style.color = '#f43f5e';
@@ -148,7 +171,7 @@ function initDevSecurityGuard() {
                 recoveryResult.style.padding = '0.6rem';
                 recoveryResult.style.borderRadius = '4px';
                 recoveryResult.style.border = '1px solid #f43f5e';
-                recoveryResult.innerText = '❌ Incorrect organizing club challenge response.';
+                recoveryResult.innerText = '❌ Unrecognized Master Admin email or organizing club challenge response.';
             }
         });
     }
