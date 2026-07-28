@@ -23,7 +23,7 @@
                 <li><a href="developer.html" target="_blank" style="color: var(--accent-cyan); font-weight: 700;">💻 Dev Console</a></li>
             </ul>
             <div class="nav-actions">
-                <a href="#" id="myPortalLink" class="btn-portal">🌟 My Portal</a>
+                <a href="#" id="myPortalLink" class="btn-portal" onclick="if(window.openMyPortalModal){window.openMyPortalModal();}else{const m=document.getElementById('myPortalModal');if(m)m.style.display='flex';}return false;">🌟 My Portal</a>
                 <button class="btn-theme" id="themeToggle" title="Toggle Theme" aria-label="Toggle Theme">🌙</button>
             </div>
         </div>

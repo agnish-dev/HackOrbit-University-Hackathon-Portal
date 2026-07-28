@@ -1166,5 +1166,14 @@ function initStudentPortal() {
             });
         }
     }
+
+    // Attach global helper for bulletproof inline fallback triggering
+    window.renderPortalUI = renderPortalUI;
+    window.openMyPortalModal = () => {
+        if (modal) {
+            modal.style.display = 'flex';
+            renderPortalUI();
+        }
+    };
 }
 
