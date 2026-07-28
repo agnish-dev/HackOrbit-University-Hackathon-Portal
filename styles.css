@@ -50,22 +50,29 @@
 
 /* Light Theme Variables (Switch via theme toggle) */
 [data-theme="light"] {
-    --bg-primary: #f2f6ff;
-    --bg-secondary: #e6f0ff;
-    --bg-card: rgba(255, 255, 255, 0.75);
-    --bg-glass: rgba(255, 255, 255, 0.85);
-    --border-glass: rgba(15, 23, 42, 0.1);
-    --border-glow: rgba(138, 43, 226, 0.3);
+    --bg-primary: #f8fafc;
+    --bg-secondary: #f1f5f9;
+    --bg-card: rgba(255, 255, 255, 0.85);
+    --bg-glass: rgba(255, 255, 255, 0.95);
+    --border-glass: rgba(15, 23, 42, 0.15);
+    --border-glow: rgba(2, 132, 199, 0.4);
     
-    --text-main: #0f172a;
-    --text-muted: #475569;
+    /* Vibrant high-contrast accents for Light Theme */
+    --accent-cyan: #0284c7;
+    --accent-purple: #7c3aed;
+    --accent-emerald: #059669;
+    --accent-gold: #d97706;
+    --accent-red: #e11d48;
+
+    --text-main: #020617;
+    --text-muted: #334155;
     --text-dark: #ffffff;
     
-    --glow-cyan: 0 8px 30px rgba(0, 242, 254, 0.2);
-    --glow-purple: 0 8px 30px rgba(138, 43, 226, 0.2);
+    --glow-cyan: 0 8px 30px rgba(2, 132, 199, 0.2);
+    --glow-purple: 0 8px 30px rgba(124, 58, 237, 0.2);
     
-    --gradient-primary: linear-gradient(135deg, #2563eb, #7c3aed, #db2777);
-    --gradient-text: linear-gradient(90deg, #1d4ed8, #7c3aed, #d946ef);
+    --gradient-primary: linear-gradient(135deg, #0284c7, #7c3aed, #db2777);
+    --gradient-text: linear-gradient(90deg, #0284c7, #7c3aed, #d946ef);
 }
 
 /* Base Styles & Resets */
@@ -329,6 +336,30 @@ section {
     transform: rotate(20deg);
 }
 
+.btn-portal {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 0.95rem;
+    color: var(--text-main);
+    background: var(--bg-card);
+    border: 1.5px solid var(--accent-cyan);
+    padding: 0.45rem 1.2rem;
+    border-radius: 25px;
+    transition: all var(--transition-fast);
+    box-shadow: var(--glow-cyan);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.btn-portal:hover {
+    background: var(--accent-cyan);
+    color: #ffffff;
+    box-shadow: 0 0 20px var(--accent-cyan);
+    transform: translateY(-2px);
+}
+
 .btn-primary {
     background: var(--gradient-primary);
     color: #fff;
@@ -415,7 +446,7 @@ section {
 .hero-tagline {
     font-size: 2.3rem;
     font-weight: 800;
-    color: #ffffff;
+    color: var(--text-main);
     margin-bottom: 1.5rem;
     letter-spacing: 0.5px;
 }
